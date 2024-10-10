@@ -41,5 +41,11 @@ namespace InputHandler
             KeyDown += onDown;
             KeyUp += onUp;
         }
+
+        public void Detach(Action<string> onDown, Action<string> onUp)
+        {
+            KeyDown -= onDown;
+            KeyUp -= onUp;
+        }
     }
 }

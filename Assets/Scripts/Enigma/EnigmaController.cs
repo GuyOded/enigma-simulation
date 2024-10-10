@@ -99,13 +99,21 @@ namespace Enigma
             _enigmaEncryptor = new EnigmaEncryptor(new Dictionary<char, char>(), _rotorsController.GetDefaultRotorsConfig(), Reflectors.REFLECTOR_A);
             _lightCube.SetActive(false);
 
-            _inputController.Attach(OnKeyDown, OnKeyUp);
-
             _topKeysIdleZ = _topKey.localPosition.z;
             _midKeysIdleZ = _middleKey.localPosition.z;
             _bottomKeysIdleZ = _bottomKey.localPosition.z;
 
             _keyHeight = _keyMesh.bounds.size.z;
+        }
+
+        public void AttachKeysInput()
+        {
+            _inputController.Attach(OnKeyDown, OnKeyUp);
+        }
+
+        public void DetachKeysInput()
+        {
+            _inputController.Detach(OnKeyDown, OnKeyUp);
         }
 
         private void OnKeyDown(string key)

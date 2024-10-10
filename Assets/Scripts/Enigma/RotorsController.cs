@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
 using DG.Tweening;
-using DG.Tweening.Plugins.Options;
 using Encryption;
-using InputHandler;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Utils;
 
 namespace Enigma
 {
@@ -26,50 +20,50 @@ namespace Enigma
 
         private const int LETTERS_IN_ENGLISH = 26;
 
+        private readonly Queue<(Transform gear, Transform letterWheel)> _animationQueue = new();
+
+        private void Update()
+        {
+            if (!_animationQueue.TryPeek(out (Transform gear, Transform letterWheel) peek))
+            {
+                return;
+            }
+
+            if (DOTween.IsTweening(peek.gear) || DOTween.IsTweening(peek.letterWheel))
+            {
+                return;
+            }
+
+            (Transform gear, Transform letterWheel) = _animationQueue.Dequeue();
+            gear.DOLocalRotate(Vector3.up * -(360f / LETTERS_IN_ENGLISH), _stepAnimationDuration, RotateMode.LocalAxisAdd);
+            letterWheel.DORotate(Vector3.up * -(360f / LETTERS_IN_ENGLISH), _stepAnimationDuration, RotateMode.LocalAxisAdd);
+        }
+
         public IEnumerable<RotorConfiguration> GetDefaultRotorsConfig()
         {
             List<RotorConfiguration> rotorsConfigurations = new() {
                 new RotorConfiguration(Rotors.ROTOR_PROPS_3, 'A'),
                 new RotorConfiguration(Rotors.ROTOR_PROPS_2, 'A', _ =>
                 {
-                    RotateRotorOneStep(_leftGear, _leftLetterWheel).Forget();
+                    RotateRotorOneStep(_leftGear, _leftLetterWheel);
                 }),
                 new RotorConfiguration(Rotors.ROTOR_PROPS_1, 'A', _ =>
                 {
-                    RotateRotorOneStep(_middleGear, _middleLetterWheel).Forget();
+                    RotateRotorOneStep(_middleGear, _middleLetterWheel);
                 }),
             };
 
             return rotorsConfigurations;
         }
 
-        public UniTaskVoid RotateFirstRotorOneStep()
+        public void RotateFirstRotorOneStep()
         {
-            return RotateRotorOneStep(_rightGear, _rightLetterWheel);
+            RotateRotorOneStep(_rightGear, _rightLetterWheel);
         }
 
-        private async UniTaskVoid RotateRotorOneStep(Transform gear, Transform letterWheel)
+        private void RotateRotorOneStep(Transform gear, Transform letterWheel)
         {
-            if (DOTween.IsTweening(gear))
-            {
-                List<Tween> tweens = DOTween.TweensByTarget(gear);
-                foreach (Tween tween in tweens)
-                {
-                    await tween.AsyncWaitForCompletion();
-                }
-            }
-
-            if (DOTween.IsTweening(letterWheel))
-            {
-                List<Tween> tweens = DOTween.TweensByTarget(letterWheel);
-                foreach (Tween tween in tweens)
-                {
-                    await tween.AsyncWaitForCompletion();
-                }
-            }
-
-            gear.DOLocalRotate(Vector3.up * (360f / LETTERS_IN_ENGLISH), _stepAnimationDuration, RotateMode.LocalAxisAdd);
-            letterWheel.DORotate(Vector3.up * (360f / LETTERS_IN_ENGLISH), _stepAnimationDuration, RotateMode.LocalAxisAdd);
+            _animationQueue.Enqueue((gear, letterWheel));
         }
     }
 }
