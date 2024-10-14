@@ -1072,6 +1072,7 @@ GameObject:
   m_Component:
   - component: {fileID: 951961468}
   - component: {fileID: 951961469}
+  - component: {fileID: 951961470}
   m_Layer: 0
   m_Name: EnigmaController
   m_TagString: Untagged
@@ -1104,6 +1105,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a6e13b7e8cc4ee2bfa23065a0b3d74d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputController: {fileID: 106583764}
+  _rotorsController: {fileID: 1343144289}
+  _typeModeController: {fileID: 951961470}
+--- !u!114 &951961470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951961467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e8dcf7aeb54ce99b27bcd2e5dfab9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _keys:
@@ -1219,7 +1235,6 @@ MonoBehaviour:
   _bottomKey: {fileID: 1702261532}
   _keyMesh: {fileID: 7276994903707912044, guid: 31c7a2de4db04b84e9ca01f4d2d298d8,
     type: 3}
-  _inputController: {fileID: 106583764}
   _rotorsController: {fileID: 1343144289}
   _lightCube: {fileID: 1380343997}
   _keyDownAnimationBottomLimit: 0.3

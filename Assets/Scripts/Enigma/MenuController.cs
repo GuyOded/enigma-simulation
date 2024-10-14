@@ -28,7 +28,7 @@ namespace Enigma
             _enigmaController.AttachKeysInput();
         }
 
-        public void EnableRotorMode()
+        public void EnableRotorConfigurationMode()
         {
 
         }
