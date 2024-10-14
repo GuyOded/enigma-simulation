@@ -27,5 +27,10 @@ namespace Enigma
             _instructionsPanel.SetActive(false);
             _enigmaController.AttachKeysInput();
         }
+
+        public void EnableRotorMode()
+        {
+
+        }
     }
 }
