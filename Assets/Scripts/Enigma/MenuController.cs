@@ -10,6 +10,13 @@ namespace Enigma
         [SerializeField] private EnigmaController _enigmaController;
         [SerializeField] private bool _showInstructionsOnStart = true;
 
+        // Text frame related
+        [SerializeField] private RectTransform _textFrameExpandArrow;
+        [SerializeField] private RectTransform _textFrameContainer;
+        [SerializeField] private RectTransform _textFrame;
+
+        private bool _isTextsFrameShown = true;
+
         private void Start()
         {
             if (!_showInstructionsOnStart)
@@ -26,6 +33,39 @@ namespace Enigma
         {
             _instructionsPanel.SetActive(false);
             _enigmaController.AttachKeysInput();
+        }
+
+        public void ToggleTextsFrame(bool value)
+        {
+            _isTextsFrameShown = value;
+
+            if (DOTween.IsTweening(_textFrameContainer))
+                _textFrameContainer.DOKill();
+            if (DOTween.IsTweening(_textFrameExpandArrow))
+                _textFrameExpandArrow.DOKill();
+
+            float finalXPosition = value ? 0 : _textFrame.rect.width;
+            _textFrameContainer.DOAnchorPosX(finalXPosition, 1f).SetEase(Ease.OutQuart);
+
+            float finalArrowZRotation = value ? 0 : 180;
+            _textFrameExpandArrow.DORotate(Vector3.forward * finalArrowZRotation, 1f).SetEase(Ease.OutQuart);
+        }
+
+        public void HideTextsContainer()
+        {
+            if (DOTween.IsTweening(_textFrameContainer))
+                _textFrameContainer.DOKill();
+
+            _textFrameContainer.DOAnchorPosX(_textFrameContainer.rect.width, 1f).SetEase(Ease.OutQuart);
+        }
+
+        public void ShowTextsContainer()
+        {
+            if (DOTween.IsTweening(_textFrameContainer))
+                _textFrameContainer.DOKill();
+
+            float finalXPosition = _isTextsFrameShown ? 0 : _textFrame.rect.width;
+            _textFrameContainer.DOAnchorPosX(finalXPosition, 1f).SetEase(Ease.OutQuart);
         }
     }
 }

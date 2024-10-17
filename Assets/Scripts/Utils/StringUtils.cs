@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Utils
+﻿namespace Utils
 {
     public static class StringUtils
     {

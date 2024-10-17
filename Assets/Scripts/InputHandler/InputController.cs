@@ -7,6 +7,7 @@ namespace InputHandler
     {
         private event Action<string> KeyDown;
         private event Action<string> KeyUp;
+        private event Action<string> KeyPress;
 
         private const string KEYS = "qwertyuiopasdfghjklzxcvbnm";
 
@@ -24,6 +25,34 @@ namespace InputHandler
                     TypeActionOnCanceled(key.ToString());
                 }
             }
+
+            string input = Input.inputString;
+            if (Input.anyKeyDown && !string.IsNullOrEmpty(input))
+            {
+                KeyPress?.Invoke(input);
+            }
+        }
+
+        public void AttachTypeEvent(Action<string> onDown, Action<string> onUp)
+        {
+            KeyDown += onDown;
+            KeyUp += onUp;
+        }
+
+        public void DetachTypeEvent(Action<string> onDown, Action<string> onUp)
+        {
+            KeyDown -= onDown;
+            KeyUp -= onUp;
+        }
+
+        public void AttachPressEvent(Action<string> onKeyPress)
+        {
+            KeyPress += onKeyPress;
+        }
+
+        public void DetachPressEvent(Action<string> onKeyPress)
+        {
+            KeyPress -= onKeyPress;
         }
 
         private void TypeActionOnCanceled(string keyName)
@@ -34,18 +63,6 @@ namespace InputHandler
         private void TypeActionOnStarted(string keyName)
         {
             KeyDown?.Invoke(keyName);
-        }
-
-        public void Attach(Action<string> onDown, Action<string> onUp)
-        {
-            KeyDown += onDown;
-            KeyUp += onUp;
-        }
-
-        public void Detach(Action<string> onDown, Action<string> onUp)
-        {
-            KeyDown -= onDown;
-            KeyUp -= onUp;
         }
     }
 }
