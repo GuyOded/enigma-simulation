@@ -61,20 +61,22 @@ namespace Enigma
                 _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
             };
 
-            _cameraTransform.DOMove(alignmentTransform.position, 1f);
+            if (DOTween.IsTweening(_cameraTransform))
+                _cameraTransform.DOKill();
+
+            _cameraTransform.DOMove(alignmentTransform.position, 1f).OnComplete(() => _menuController.ModeSwitchAnimationCallback(mode));
             _cameraTransform.DORotate(alignmentTransform.rotation.eulerAngles, 1f);
 
             if (mode != EnigmaOperationMode.Type)
             {
                 _textWriter.DetachInputEvent();
-                _menuController.HideTextsContainer();
             }
             else if (_currentMode != EnigmaOperationMode.Type)
             {
-                _menuController.ShowTextsContainer();
                 _textWriter.AttachInputEvent();
             }
-
+            
+            _menuController.HandleModeSwitch(mode);
             _currentMode = mode;
         }
 

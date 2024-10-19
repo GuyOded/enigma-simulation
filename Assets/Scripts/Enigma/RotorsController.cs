@@ -39,7 +39,7 @@ namespace Enigma
             letterWheel.DORotate(Vector3.up * -(360f / LETTERS_IN_ENGLISH), _stepAnimationDuration, RotateMode.LocalAxisAdd);
         }
 
-        public IEnumerable<RotorConfiguration> GetDefaultRotorsConfig()
+        public ICollection<RotorConfiguration> GetDefaultRotorsConfig()
         {
             List<RotorConfiguration> rotorsConfigurations = new() {
                 new RotorConfiguration(Rotors.ROTOR_PROPS_3, 'A'),

@@ -7,12 +7,12 @@ namespace Encryption
     {
         private readonly List<Rotor> _rotorChain;
 
-        public RotorChain(IEnumerable<RotorConfiguration> rotorChain)
+        public RotorChain(ICollection<RotorConfiguration> rotorChain)
         {
             _rotorChain = InitializeRotorChain(rotorChain);
         }
 
-        private static List<Rotor> InitializeRotorChain(IEnumerable<RotorConfiguration> ringConfigChain)
+        private static List<Rotor> InitializeRotorChain(ICollection<RotorConfiguration> ringConfigChain)
         {
             RotorConfiguration firstConfig = ringConfigChain.First();
             Rotor first = new(firstConfig.RotorProps, firstConfig.InitialPosition, firstConfig.StepCallback, firstConfig.RingSetting);
@@ -29,6 +29,11 @@ namespace Encryption
 
                 return currentList;
             });
+        }
+
+        public List<int> GetCurrentRotorPositions()
+        {
+            return new List<int>(_rotorChain.Select(rotor => rotor.GetCurrentPosition()));
         }
 
         public char IncrementAndGetMappedCharacter(char input)

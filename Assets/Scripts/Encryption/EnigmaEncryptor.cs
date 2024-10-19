@@ -10,9 +10,10 @@ namespace Encryption
         private readonly RotorChain _rc;
         private readonly IDictionary<char, char> _reflector;
         private readonly IDictionary<char, char> _letterTranspositions;
+        private readonly ICollection<RotorConfiguration> _initialRotorConfig;
 
         public EnigmaEncryptor(IDictionary<char, char> letterTranspositions,
-            IEnumerable<RotorConfiguration> rotorConfigurations,
+            ICollection<RotorConfiguration> rotorConfigurations,
             IDictionary<char, char> reflector)
         {
             if (!letterTranspositions.All(pair => Validations.IsCharInRange(pair.Key) && Validations.IsCharInRange(pair.Value)))
@@ -29,6 +30,7 @@ namespace Encryption
                 throw new ArgumentException("The letter transposition map is not an involution");
 
             _letterTranspositions = SymmetrizeMap(letterTranspositions);
+            _initialRotorConfig = rotorConfigurations.ToList();
             _rc = new RotorChain(rotorConfigurations);
             _reflector = reflector;
         }
@@ -43,6 +45,16 @@ namespace Encryption
         public string Decrypt(string payload)
         {
             return Encrypt(payload);
+        }
+
+        public ICollection<RotorConfiguration> GetInitialConfiguration()
+        {
+            return _initialRotorConfig;
+        }
+
+        public List<int> GetCurrentRotorPositions()
+        {
+            return _rc.GetCurrentRotorPositions();
         }
 
         // ReSharper disable once MemberCanBePrivate.Global

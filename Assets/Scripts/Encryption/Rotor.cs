@@ -32,6 +32,11 @@ namespace Encryption
             }
         }
 
+        public int GetCurrentPosition()
+        {
+            return _currentPosition;
+        }
+
         public char IncrementAndGet(char input)
         {
             Increment();

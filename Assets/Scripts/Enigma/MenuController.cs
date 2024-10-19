@@ -15,6 +15,10 @@ namespace Enigma
         [SerializeField] private RectTransform _textFrameContainer;
         [SerializeField] private RectTransform _textFrame;
 
+        // Gear config related
+        [SerializeField] private GameObject _rotorConfigCanvas;
+        [SerializeField] private Transform[] _rotorsConfigButtons;
+
         private bool _isTextsFrameShown = true;
 
         private void Start()
@@ -26,7 +30,7 @@ namespace Enigma
             }
 
             _instructionFrame.localScale = Vector3.zero;
-            _instructionFrame.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBounce);
+            _instructionFrame.DOScale(Vector3.one, 0.4f).SetEase(Ease.InOutElastic);
         }
 
         public void HideInstructions()
@@ -51,7 +55,37 @@ namespace Enigma
             _textFrameExpandArrow.DORotate(Vector3.forward * finalArrowZRotation, 1f).SetEase(Ease.OutQuart);
         }
 
-        public void HideTextsContainer()
+        public void HandleModeSwitch(EnigmaOperationMode enigmaMode)
+        {
+            if (enigmaMode != EnigmaOperationMode.Type)
+            {
+                HideTextsContainer();
+            }
+            else
+            {
+                ShowTextsContainer();
+            }
+
+            if (enigmaMode != EnigmaOperationMode.RotorConfiguration)
+            {
+                _rotorConfigCanvas.SetActive(false);
+            }
+        }
+
+        public void ModeSwitchAnimationCallback(EnigmaOperationMode enigmaMode)
+        {
+            if (enigmaMode == EnigmaOperationMode.RotorConfiguration)
+            {
+                _rotorConfigCanvas.SetActive(true);
+                foreach (Transform rotorsConfigButton in _rotorsConfigButtons)
+                {
+                    rotorsConfigButton.localScale = Vector3.zero;
+                    rotorsConfigButton.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutElastic);
+                }
+            }
+        }
+
+        private void HideTextsContainer()
         {
             if (DOTween.IsTweening(_textFrameContainer))
                 _textFrameContainer.DOKill();
@@ -59,7 +93,7 @@ namespace Enigma
             _textFrameContainer.DOAnchorPosX(_textFrameContainer.rect.width, 1f).SetEase(Ease.OutQuart);
         }
 
-        public void ShowTextsContainer()
+        private void ShowTextsContainer()
         {
             if (DOTween.IsTweening(_textFrameContainer))
                 _textFrameContainer.DOKill();
