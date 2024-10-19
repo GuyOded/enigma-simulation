@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Encryption;
 using InputHandler;
@@ -51,6 +52,34 @@ namespace Enigma
             _inputController.AttachTypeEvent(OnKeyDown, OnKeyUp);
         }
 
+        public void RotateRotor(RotorsPlacement rotor, int stepsToRotate)
+        {
+            List<RotorConfiguration> rotorConfiguration = _enigmaEncryptor.GetInitialConfiguration();
+            int rotorIndex = rotor switch
+            {
+                RotorsPlacement.Left => 0,
+                RotorsPlacement.Middle => 1,
+                RotorsPlacement.Right => 2,
+                _ => throw new ArgumentOutOfRangeException(nameof(rotor), rotor, null)
+            };
+
+            List<int> rotorsPositions = _enigmaEncryptor.GetCurrentRotorPositions();
+            ICollection<RotorConfiguration> newConfig = rotorConfiguration.Zip(rotorsPositions, (configuration, position) => (configuration, position))
+                .Select((configPositionTuple, index) => {
+                    RotorConfiguration config = configPositionTuple.configuration;
+                    int newPosition = (configPositionTuple.position + (rotorIndex == index ? stepsToRotate : 0)) % Consts.ALPHABET_SIZE;
+                    newPosition += newPosition < 0 ? Consts.ALPHABET_SIZE : 0;
+
+                    return new RotorConfiguration(config.RotorProps,
+                        (char)(Consts.FIRST_LETTER + newPosition),
+                        config.StepCallback,
+                        config.RingSetting);
+                }).ToArray();
+
+            _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), newConfig, _enigmaEncryptor.GetReflector());
+            _rotorsController.RotateRotor(rotor, stepsToRotate);
+        }
+
         private void HandleModeSwitch(EnigmaOperationMode mode)
         {
             Transform alignmentTransform = mode switch
@@ -75,7 +104,7 @@ namespace Enigma
             {
                 _textWriter.AttachInputEvent();
             }
-            
+
             _menuController.HandleModeSwitch(mode);
             _currentMode = mode;
         }
@@ -91,6 +120,7 @@ namespace Enigma
             char encrypted = _enigmaEncryptor.EncipherChar(key.ToUpper()[0]);
             _typeModeController.OnKeyDown(key, encrypted.ToString());
             _textWriter.WriteCipherText(encrypted);
+            // Debug.Log(string.Join(",", _enigmaEncryptor.GetCurrentRotorPositions().ToArray()));
         }
 
         private void OnKeyUp(string key)

@@ -47,14 +47,24 @@ namespace Encryption
             return Encrypt(payload);
         }
 
-        public ICollection<RotorConfiguration> GetInitialConfiguration()
+        public List<RotorConfiguration> GetInitialConfiguration()
         {
-            return _initialRotorConfig;
+            return _initialRotorConfig.ToList();
         }
 
         public List<int> GetCurrentRotorPositions()
         {
             return _rc.GetCurrentRotorPositions();
+        }
+
+        public IDictionary<char, char> GetLetterTranspositions()
+        {
+            return _letterTranspositions;
+        }
+
+        public IDictionary<char, char> GetReflector()
+        {
+            return _reflector;
         }
 
         // ReSharper disable once MemberCanBePrivate.Global

@@ -385,6 +385,7 @@ Transform:
   - {fileID: 1343144288}
   - {fileID: 804355746}
   - {fileID: 449784265}
+  - {fileID: 1096827486}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &58530510
@@ -469,7 +470,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 58530513}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnLeftRotorUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &58530513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,7 +722,7 @@ GameObject:
   - component: {fileID: 84739258}
   - component: {fileID: 84739257}
   m_Layer: 5
-  m_Name: LeftRotorUp
+  m_Name: RightRotorUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -778,7 +791,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 84739258}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnRightRotorUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &84739258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1680,7 +1705,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 385710421}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnLeftRotorDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &385710421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3963,7 +4000,7 @@ GameObject:
   - component: {fileID: 1063787193}
   - component: {fileID: 1063787192}
   m_Layer: 5
-  m_Name: LeftRotorUp
+  m_Name: MiddleRotorUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4032,7 +4069,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1063787193}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnMiddleRotorUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1063787193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4071,6 +4120,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1063787190}
   m_CullTransparentMesh: 1
+--- !u!1 &1096827485
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1096827486}
+  - component: {fileID: 1096827487}
+  m_Layer: 0
+  m_Name: RotorsMenuController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1096827486
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096827485}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 41083732}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1096827487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096827485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6fcc17e41e341ed9813caa1f9093d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enigmaController: {fileID: 951961469}
 --- !u!1 &1121028388 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6887057669018886726, guid: 31c7a2de4db04b84e9ca01f4d2d298d8,
@@ -4829,7 +4923,7 @@ GameObject:
   - component: {fileID: 1339658033}
   - component: {fileID: 1339658032}
   m_Layer: 5
-  m_Name: LeftRotorDown
+  m_Name: MiddleRotorDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4898,7 +4992,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1339658033}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnMiddleRotorDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1339658033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6523,7 +6629,7 @@ GameObject:
   - component: {fileID: 1468464882}
   - component: {fileID: 1468464881}
   m_Layer: 5
-  m_Name: LeftRotorDown
+  m_Name: RightRotorDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6592,7 +6698,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1468464882}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnRightRotorDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1468464882
 MonoBehaviour:
   m_ObjectHideFlags: 0
