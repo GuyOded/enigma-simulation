@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -11,15 +12,12 @@ namespace Enigma
         [SerializeField] private bool _showInstructionsOnStart = true;
 
         // Text frame related
-        [SerializeField] private RectTransform _textFrameExpandArrow;
-        [SerializeField] private RectTransform _textFrameContainer;
-        [SerializeField] private RectTransform _textFrame;
+        [SerializeField] private ExpandableSideMenu _textMenu;
 
         // Gear config related
+        [SerializeField] private ExpandableSideMenu _rotorConfigMenu;
         [SerializeField] private GameObject _rotorConfigCanvas;
         [SerializeField] private Transform[] _rotorsConfigButtons;
-
-        private bool _isTextsFrameShown = true;
 
         private void Start()
         {
@@ -39,31 +37,25 @@ namespace Enigma
             _enigmaController.AttachKeysInput();
         }
 
-        public void ToggleTextsFrame(bool value)
-        {
-            _isTextsFrameShown = value;
-
-            if (DOTween.IsTweening(_textFrameContainer))
-                _textFrameContainer.DOKill();
-            if (DOTween.IsTweening(_textFrameExpandArrow))
-                _textFrameExpandArrow.DOKill();
-
-            float finalXPosition = value ? 0 : _textFrame.rect.width;
-            _textFrameContainer.DOAnchorPosX(finalXPosition, 1f).SetEase(Ease.OutQuart);
-
-            float finalArrowZRotation = value ? 0 : 180;
-            _textFrameExpandArrow.DORotate(Vector3.forward * finalArrowZRotation, 1f).SetEase(Ease.OutQuart);
-        }
-
         public void HandleModeSwitch(EnigmaOperationMode enigmaMode)
         {
-            if (enigmaMode != EnigmaOperationMode.Type)
+            _textMenu.Hide();
+            _rotorConfigMenu.Hide();
+
+            switch (enigmaMode)
             {
-                HideTextsContainer();
-            }
-            else
-            {
-                ShowTextsContainer();
+                case EnigmaOperationMode.Type:
+                    _textMenu.gameObject.SetActive(true);
+                    _textMenu.Show();
+                    break;
+                case EnigmaOperationMode.RotorConfiguration:
+                    _rotorConfigMenu.gameObject.SetActive(true);
+                    _rotorConfigMenu.Show();
+                    break;
+                case EnigmaOperationMode.LettersTranspositions:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(enigmaMode), enigmaMode, null);
             }
 
             if (enigmaMode != EnigmaOperationMode.RotorConfiguration)
@@ -83,23 +75,6 @@ namespace Enigma
                     rotorsConfigButton.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutElastic);
                 }
             }
-        }
-
-        private void HideTextsContainer()
-        {
-            if (DOTween.IsTweening(_textFrameContainer))
-                _textFrameContainer.DOKill();
-
-            _textFrameContainer.DOAnchorPosX(_textFrameContainer.rect.width, 1f).SetEase(Ease.OutQuart);
-        }
-
-        private void ShowTextsContainer()
-        {
-            if (DOTween.IsTweening(_textFrameContainer))
-                _textFrameContainer.DOKill();
-
-            float finalXPosition = _isTextsFrameShown ? 0 : _textFrame.rect.width;
-            _textFrameContainer.DOAnchorPosX(finalXPosition, 1f).SetEase(Ease.OutQuart);
         }
     }
 }

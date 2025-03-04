@@ -120,7 +120,6 @@ namespace Enigma
             char encrypted = _enigmaEncryptor.EncipherChar(key.ToUpper()[0]);
             _typeModeController.OnKeyDown(key, encrypted.ToString());
             _textWriter.WriteCipherText(encrypted);
-            // Debug.Log(string.Join(",", _enigmaEncryptor.GetCurrentRotorPositions().ToArray()));
         }
 
         private void OnKeyUp(string key)
