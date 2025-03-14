@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Enigma
@@ -38,12 +39,12 @@ namespace Enigma
             _menuFrameContainer.DOAnchorPosX(xPos, ANIMATION_DURATION).SetEase(Ease.OutQuart);
         }
 
-        public void Hide()
+        public void Hide(Action callback = null)
         {
             if (DOTween.IsTweening(_menuFrameContainer))
                 DOTween.Kill(_menuFrameContainer);
 
-            _menuFrameContainer.DOAnchorPosX(_menuFrameContainer.rect.width, ANIMATION_DURATION).SetEase(Ease.OutQuart);
+            _menuFrameContainer.DOAnchorPosX(_menuFrameContainer.rect.width, ANIMATION_DURATION).SetEase(Ease.OutQuart).OnComplete(() => callback?.Invoke());
         }
 
         private void Expand()

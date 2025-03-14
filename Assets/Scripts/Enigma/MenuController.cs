@@ -39,8 +39,8 @@ namespace Enigma
 
         public void HandleModeSwitch(EnigmaOperationMode enigmaMode)
         {
-            _textMenu.Hide();
-            _rotorConfigMenu.Hide();
+            _textMenu.Hide(() => _textMenu.gameObject.SetActive(false));
+            _rotorConfigMenu.Hide(() => _rotorConfigMenu.gameObject.SetActive(false));
 
             switch (enigmaMode)
             {
