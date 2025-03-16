@@ -4,7 +4,7 @@
     {
         public static bool IsLetter(string str)
         {
-            if (str.Length > 1)
+            if (str.Length != 1)
                 return false;
 
             char key = str.ToUpper()[0];

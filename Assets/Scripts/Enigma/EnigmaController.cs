@@ -52,7 +52,19 @@ namespace Enigma
             _inputController.AttachTypeEvent(OnKeyDown, OnKeyUp);
         }
 
+        public void StepwiseRotateRotor(RotorsPlacement rotor, int stepsToRotate, bool animate = true)
+        {
+            SetEnigmaRotorState(rotor, stepsToRotate);
+            _rotorsController.StepwiseRotateRotor(rotor, stepsToRotate, animate);
+        }
+
         public void RotateRotor(RotorsPlacement rotor, int stepsToRotate)
+        {
+            SetEnigmaRotorState(rotor, stepsToRotate);
+            _rotorsController.RotateRotor(rotor, stepsToRotate);
+        }
+
+        private void SetEnigmaRotorState(RotorsPlacement rotor, int stepsToRotate)
         {
             List<RotorConfiguration> rotorConfiguration = _enigmaEncryptor.GetInitialConfiguration();
             int rotorIndex = rotor switch
@@ -77,12 +89,24 @@ namespace Enigma
                 }).ToArray();
 
             _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), newConfig, _enigmaEncryptor.GetReflector());
-            _rotorsController.RotateRotor(rotor, stepsToRotate);
         }
 
-        public List<int> GetCurrentRotorPositions()
+        public List<int> GetRotorPositions()
         {
             return _enigmaEncryptor.GetCurrentRotorPositions();
+        }
+
+        public int GetRotorPosition(RotorsPlacement placement)
+        {
+            int rotorIndex = placement switch
+            {
+                RotorsPlacement.Left => 0,
+                RotorsPlacement.Middle => 1,
+                RotorsPlacement.Right => 2,
+                _ => throw new IndexOutOfRangeException("Unknown rotor placement")
+            };
+
+            return _enigmaEncryptor.GetCurrentRotorPositions()[rotorIndex];
         }
 
         private void HandleModeSwitch(EnigmaOperationMode mode)

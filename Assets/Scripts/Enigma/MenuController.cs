@@ -52,7 +52,7 @@ namespace Enigma
                 case EnigmaOperationMode.RotorConfiguration:
                     _rotorConfigMenu.gameObject.SetActive(true);
                     _rotorConfigMenu.Show();
-                    _rotorMenuController.SetLettersText(_enigmaController.GetCurrentRotorPositions());
+                    _rotorMenuController.SetLettersText(_enigmaController.GetRotorPositions());
                     break;
                 case EnigmaOperationMode.LettersTranspositions:
                     break;

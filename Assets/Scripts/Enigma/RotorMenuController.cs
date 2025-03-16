@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Encryption;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
+using Utils;
 
 namespace Enigma
 {
@@ -22,40 +25,78 @@ namespace Enigma
             _rightRotorMenuText.text = currentLetters[^1];
         }
 
+        public void OnLeftRotorTextEndEdit(string letter)
+        {
+            RotateRotorToLetter(RotorsPlacement.Left, letter);
+        }
+
+        public void OnMiddleRotorTextEndEdit(string letter)
+        {
+            RotateRotorToLetter(RotorsPlacement.Middle, letter);
+        }
+
+        public void OnRightRotorTextEndEdit(string letter)
+        {
+            RotateRotorToLetter(RotorsPlacement.Right, letter);
+        }
+
+        private void RotateRotorToLetter(RotorsPlacement placement, string letter)
+        {
+            string currentRotorPosition = ((char)('A' + _enigmaController.GetRotorPosition(placement))).ToString();
+            TMP_InputField rotorInput = placement switch
+            {
+                RotorsPlacement.Left => _leftRotorMenuText,
+                RotorsPlacement.Middle => _middleRotorMenuText,
+                RotorsPlacement.Right => _rightRotorMenuText,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            if (!StringUtils.IsLetter(letter))
+            {
+                rotorInput.text = currentRotorPosition;
+                return;
+            }
+
+            int forwardSteps = letter[0] - currentRotorPosition[0];
+            int backwardSteps = letter[0] - currentRotorPosition[0] - Consts.ALPHABET_SIZE;
+            int steps = math.abs(forwardSteps) <= math.abs(backwardSteps) ? forwardSteps : backwardSteps;
+            _enigmaController.RotateRotor(placement, steps);
+        }
+
         public void OnLeftRotorUp()
         {
-            _enigmaController.RotateRotor(RotorsPlacement.Left, 1);
-            _leftRotorMenuText.text = ((char)('A' + _enigmaController.GetCurrentRotorPositions()[0])).ToString();
+            _enigmaController.StepwiseRotateRotor(RotorsPlacement.Left, 1);
+            _leftRotorMenuText.text = ((char)('A' + _enigmaController.GetRotorPositions()[0])).ToString();
         }
 
         public void OnLeftRotorDown()
         {
-            _enigmaController.RotateRotor(RotorsPlacement.Left, -1);
-            _leftRotorMenuText.text = ((char)('A' + _enigmaController.GetCurrentRotorPositions()[0])).ToString();
+            _enigmaController.StepwiseRotateRotor(RotorsPlacement.Left, -1);
+            _leftRotorMenuText.text = ((char)('A' + _enigmaController.GetRotorPositions()[0])).ToString();
         }
 
         public void OnRightRotorUp()
         {
-            _enigmaController.RotateRotor(RotorsPlacement.Right, 1);
-            _rightRotorMenuText.text = ((char)('A' + _enigmaController.GetCurrentRotorPositions()[^1])).ToString();
+            _enigmaController.StepwiseRotateRotor(RotorsPlacement.Right, 1);
+            _rightRotorMenuText.text = ((char)('A' + _enigmaController.GetRotorPositions()[^1])).ToString();
         }
 
         public void OnRightRotorDown()
         {
-            _enigmaController.RotateRotor(RotorsPlacement.Right, -1);
-            _rightRotorMenuText.text = ((char)('A' + _enigmaController.GetCurrentRotorPositions()[^1])).ToString();
+            _enigmaController.StepwiseRotateRotor(RotorsPlacement.Right, -1);
+            _rightRotorMenuText.text = ((char)('A' + _enigmaController.GetRotorPositions()[^1])).ToString();
         }
 
         public void OnMiddleRotorUp()
         {
-            _enigmaController.RotateRotor(RotorsPlacement.Middle, 1);
-            _middleRotorMenuText.text = ((char)('A' + _enigmaController.GetCurrentRotorPositions()[1])).ToString();
+            _enigmaController.StepwiseRotateRotor(RotorsPlacement.Middle, 1);
+            _middleRotorMenuText.text = ((char)('A' + _enigmaController.GetRotorPositions()[1])).ToString();
         }
 
         public void OnMiddleRotorDown()
         {
-            _enigmaController.RotateRotor(RotorsPlacement.Middle, -1);
-            _middleRotorMenuText.text = ((char)('A' + _enigmaController.GetCurrentRotorPositions()[1])).ToString();
+            _enigmaController.StepwiseRotateRotor(RotorsPlacement.Middle, -1);
+            _middleRotorMenuText.text = ((char)('A' + _enigmaController.GetRotorPositions()[1])).ToString();
         }
     }
 }

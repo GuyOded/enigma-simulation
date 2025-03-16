@@ -62,7 +62,7 @@ namespace Enigma
             RotateRotorOneStep(_rightGear, _rightLetterWheel);
         }
 
-        public void RotateRotor(RotorsPlacement rotor, int steps, bool animate = true)
+        public void StepwiseRotateRotor(RotorsPlacement rotor, int steps, bool animate = true)
         {
             (Transform gear, Transform letterWheel) = rotor switch
             {
@@ -83,6 +83,20 @@ namespace Enigma
 
             gear.localRotation *= Quaternion.Euler(gear.localRotation.eulerAngles + Vector3.up * (-360f / Consts.ALPHABET_SIZE) * steps);
             letterWheel.Rotate(Vector3.up, (-360f / Consts.ALPHABET_SIZE) * steps);
+        }
+
+        public void RotateRotor(RotorsPlacement rotor, int steps)
+        {
+            (Transform gear, Transform letterWheel) = rotor switch
+            {
+                RotorsPlacement.Left => (_leftGear, _leftLetterWheel),
+                RotorsPlacement.Middle => (_middleGear, _middleLetterWheel),
+                RotorsPlacement.Right => (_rightGear, _rightLetterWheel),
+                _ => throw new ArgumentOutOfRangeException(nameof(rotor), rotor, null)
+            };
+
+            letterWheel.DOLocalRotate(Vector3.up * (-360f / Consts.ALPHABET_SIZE) * steps, 1, RotateMode.LocalAxisAdd);
+            gear.DOLocalRotate(Vector3.up * (-360f / Consts.ALPHABET_SIZE) * steps, 1, RotateMode.LocalAxisAdd);
         }
 
         private void RotateRotorOneStep(Transform gear, Transform letterWheel, bool rotateBack = false)

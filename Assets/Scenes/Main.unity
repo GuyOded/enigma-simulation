@@ -2546,6 +2546,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 71089561}
     m_Modifications:
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1096827487}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnMiddleRotorTextEndEdit
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Enigma.RotorMenuController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6571300961600034329, guid: 6c89445b0e294114aaacdde84bc74249,
         type: 3}
       propertyPath: m_Pivot.x
@@ -7847,6 +7882,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 71089561}
     m_Modifications:
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1096827487}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnRightRotorTextEndEdit
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Enigma.RotorMenuController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6571300961600034329, guid: 6c89445b0e294114aaacdde84bc74249,
         type: 3}
       propertyPath: m_Pivot.x
@@ -12453,6 +12523,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 71089561}
     m_Modifications:
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1096827487}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnLeftRotorTextEndEdit
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Enigma.RotorMenuController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409677940805879942, guid: 6c89445b0e294114aaacdde84bc74249,
+        type: 3}
+      propertyPath: m_OnEndEdit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6571300961600034329, guid: 6c89445b0e294114aaacdde84bc74249,
         type: 3}
       propertyPath: m_Pivot.x
