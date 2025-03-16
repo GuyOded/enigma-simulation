@@ -15,6 +15,7 @@ namespace Enigma
         [SerializeField] private ExpandableSideMenu _textMenu;
 
         // Gear config related
+        [SerializeField] private RotorMenuController _rotorMenuController;
         [SerializeField] private ExpandableSideMenu _rotorConfigMenu;
         [SerializeField] private GameObject _rotorConfigCanvas;
         [SerializeField] private Transform[] _rotorsConfigButtons;
@@ -51,6 +52,7 @@ namespace Enigma
                 case EnigmaOperationMode.RotorConfiguration:
                     _rotorConfigMenu.gameObject.SetActive(true);
                     _rotorConfigMenu.Show();
+                    _rotorMenuController.SetLettersText(_enigmaController.GetCurrentRotorPositions());
                     break;
                 case EnigmaOperationMode.LettersTranspositions:
                     break;

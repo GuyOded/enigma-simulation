@@ -80,6 +80,11 @@ namespace Enigma
             _rotorsController.RotateRotor(rotor, stepsToRotate);
         }
 
+        public List<int> GetCurrentRotorPositions()
+        {
+            return _enigmaEncryptor.GetCurrentRotorPositions();
+        }
+
         private void HandleModeSwitch(EnigmaOperationMode mode)
         {
             Transform alignmentTransform = mode switch
