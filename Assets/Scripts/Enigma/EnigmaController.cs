@@ -27,7 +27,7 @@ namespace Enigma
 
         private void Start()
         {
-            _enigmaEncryptor = new EnigmaEncryptor(new Dictionary<char, char>(), _rotorsController.GetDefaultRotorsConfig(), Reflectors.REFLECTOR_A);
+            _enigmaEncryptor = new EnigmaEncryptor(new Dictionary<char, char>(), _rotorsController.GetDefaultRotorsConfig(), Reflectors.REFLECTOR_B);
             _currentMode = EnigmaOperationMode.Type;
             _textWriter.AttachInputEvent();
         }
@@ -103,7 +103,7 @@ namespace Enigma
             _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), newConfig, _enigmaEncryptor.GetReflector());
         }
 
-        private void SetEnigmaRotorType(RotorsPlacement rotor, RotorProps rotorProps)
+        public void SetEnigmaRotorType(RotorsPlacement rotor, RotorProps rotorProps)
         {
             int rotorIndex = GetRotorIndexByPlacement(rotor);
 

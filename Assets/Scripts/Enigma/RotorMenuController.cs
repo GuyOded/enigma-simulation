@@ -40,6 +40,34 @@ namespace Enigma
             RotateRotorToLetter(RotorsPlacement.Right, letter);
         }
 
+        public void OnLeftRotorTypeChange(int index)
+        {
+            _enigmaController.SetEnigmaRotorType(RotorsPlacement.Left, GetRotorPropsByIndex(index));
+        }
+
+        public void OnMiddleRotorTypeChange(int index)
+        {
+            _enigmaController.SetEnigmaRotorType(RotorsPlacement.Middle, GetRotorPropsByIndex(index));
+        }
+
+        public void OnRightRotorTypeChange(int index)
+        {
+            _enigmaController.SetEnigmaRotorType(RotorsPlacement.Right, GetRotorPropsByIndex(index));
+        }
+
+        private RotorProps GetRotorPropsByIndex(int index)
+        {
+            return index switch
+            {
+                0 => Rotors.ROTOR_PROPS_1,
+                1 => Rotors.ROTOR_PROPS_2,
+                2 => Rotors.ROTOR_PROPS_3,
+                3 => Rotors.ROTOR_PROPS_4,
+                4 => Rotors.ROTOR_PROPS_5,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "No rotor types available for this index")
+            };
+        }
+
         private void RotateRotorToLetter(RotorsPlacement placement, string letter)
         {
             string currentRotorPosition = ((char)('A' + _enigmaController.GetRotorPosition(placement))).ToString();

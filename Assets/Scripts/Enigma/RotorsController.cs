@@ -43,8 +43,8 @@ namespace Enigma
         public ICollection<RotorConfiguration> GetDefaultRotorsConfig()
         {
             List<RotorConfiguration> rotorsConfigurations = new() {
-                new RotorConfiguration(Rotors.ROTOR_PROPS_3, 'A'),
-                new RotorConfiguration(Rotors.ROTOR_PROPS_2, 'A', _ =>
+                new RotorConfiguration(Rotors.ROTOR_PROPS_1, 'A'),
+                new RotorConfiguration(Rotors.ROTOR_PROPS_1, 'A', _ =>
                 {
                     RotateRotorOneStep(_leftGear, _leftLetterWheel);
                 }),

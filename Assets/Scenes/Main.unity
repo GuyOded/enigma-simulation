@@ -6284,9 +6284,25 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Rotor 3
       m_Image: {fileID: 0}
+    - m_Text: Rotor 4
+      m_Image: {fileID: 0}
+    - m_Text: Rotor 5
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnLeftRotorTypeChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1123216617
 MonoBehaviour:
@@ -9953,9 +9969,25 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Rotor 3
       m_Image: {fileID: 0}
+    - m_Text: Rotor 4
+      m_Image: {fileID: 0}
+    - m_Text: Rotor 5
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnRightRotorTypeChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1652241236
 MonoBehaviour:
@@ -12102,9 +12134,25 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Rotor 3
       m_Image: {fileID: 0}
+    - m_Text: Rotor 4
+      m_Image: {fileID: 0}
+    - m_Text: Rotor 5
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1096827487}
+        m_TargetAssemblyTypeName: Enigma.RotorMenuController, Assembly-CSharp
+        m_MethodName: OnMiddleRotorTypeChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &2102786247
 MonoBehaviour:
