@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AYellowpaper.SerializedCollections;
+﻿using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 namespace Enigma
@@ -36,5 +35,35 @@ namespace Enigma
             { 'Y', null },
             { 'Z', null }
         };
+
+        private bool _isClickEventsActive;
+
+        private void Start()
+        {
+            _isClickEventsActive = false;
+        }
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0) && _isClickEventsActive)
+            {
+                CastRayInMouseDirection();
+            }
+        }
+
+        public void AttachClickEvents()
+        {
+            _isClickEventsActive = true;
+        }
+
+        public void DetachClickEvents()
+        {
+            _isClickEventsActive = false;
+        }
+
+        private void CastRayInMouseDirection()
+        {
+            Debug.Log("This is active!");
+        }
     }
 }

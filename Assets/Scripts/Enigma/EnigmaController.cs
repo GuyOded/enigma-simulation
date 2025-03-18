@@ -22,6 +22,8 @@ namespace Enigma
         [SerializeField] private Transform _typeModeAlignment;
         [SerializeField] private Transform _letterTranspositionModeAlignment;
 
+        [SerializeField] private PlugboardController _plugboardController;
+
         private EnigmaEncryptor _enigmaEncryptor;
         private EnigmaOperationMode _currentMode;
 
@@ -162,6 +164,15 @@ namespace Enigma
             else if (_currentMode != EnigmaOperationMode.Type)
             {
                 _textWriter.AttachInputEvent();
+            }
+
+            if (mode != EnigmaOperationMode.LettersTranspositions)
+            {
+                _plugboardController.DetachClickEvents();
+            }
+            else
+            {
+                _plugboardController.AttachClickEvents();
             }
 
             _menuController.HandleModeSwitch(mode);
