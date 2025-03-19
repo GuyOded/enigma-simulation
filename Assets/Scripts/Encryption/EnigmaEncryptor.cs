@@ -92,8 +92,8 @@ namespace Encryption
             Dictionary<char, char> result = new();
             result = map.Aggregate(result, (symmetrized, keyValuePair) =>
             {
-                symmetrized.Add(keyValuePair.Key, keyValuePair.Value);
-                symmetrized.Add(keyValuePair.Value, keyValuePair.Key);
+                symmetrized.TryAdd(keyValuePair.Key, keyValuePair.Value);
+                symmetrized.TryAdd(keyValuePair.Value, keyValuePair.Key);
                 return symmetrized;
             });
 

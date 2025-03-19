@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Encryption;
+using Enigma.Plugboard;
 using InputHandler;
 using UnityEngine;
 using Utils;
@@ -29,7 +30,8 @@ namespace Enigma
 
         private void Start()
         {
-            _enigmaEncryptor = new EnigmaEncryptor(new Dictionary<char, char>(), _rotorsController.GetDefaultRotorsConfig(), Reflectors.REFLECTOR_B);
+            _enigmaEncryptor = new EnigmaEncryptor(new Dictionary<char, char>(),
+                _rotorsController.GetDefaultRotorsConfig(), Reflectors.REFLECTOR_B);
             _currentMode = EnigmaOperationMode.Type;
             _textWriter.AttachInputEvent();
         }
@@ -71,6 +73,26 @@ namespace Enigma
             return _enigmaEncryptor.GetCurrentRotorPositions();
         }
 
+        public IDictionary<char, char> GetLetterTranspositions()
+        {
+            return _enigmaEncryptor.GetLetterTranspositions();
+        }
+
+        public void AddNewTransposition(char first, char second)
+        {
+            IDictionary<char, char> currentTranspositions = _enigmaEncryptor.GetLetterTranspositions();
+            if (currentTranspositions.ContainsKey(first) || currentTranspositions.ContainsKey(second) ||
+                currentTranspositions.Values.Contains(first) || currentTranspositions.Values.Contains(second))
+            {
+                throw new ArgumentException("Letter already exists in transpositions");
+            }
+
+            Dictionary<char, char> newTranspositions = new(currentTranspositions) { { first, second } };
+
+            _enigmaEncryptor = new EnigmaEncryptor(newTranspositions, _enigmaEncryptor.GetInitialConfiguration(),
+                _enigmaEncryptor.GetReflector());
+        }
+
         public int GetRotorPosition(RotorsPlacement placement)
         {
             int rotorIndex = placement switch
@@ -90,10 +112,12 @@ namespace Enigma
             int rotorIndex = GetRotorIndexByPlacement(rotor);
 
             List<int> rotorsPositions = _enigmaEncryptor.GetCurrentRotorPositions();
-            ICollection<RotorConfiguration> newConfig = rotorConfiguration.Zip(rotorsPositions, (configuration, position) => (configuration, position))
+            ICollection<RotorConfiguration> newConfig = rotorConfiguration
+                .Zip(rotorsPositions, (configuration, position) => (configuration, position))
                 .Select((configPositionTuple, index) => {
                     RotorConfiguration config = configPositionTuple.configuration;
-                    int newPosition = (configPositionTuple.position + (rotorIndex == index ? stepsToRotate : 0)) % Consts.ALPHABET_SIZE;
+                    int newPosition = (configPositionTuple.position + (rotorIndex == index ? stepsToRotate : 0)) %
+                                      Consts.ALPHABET_SIZE;
                     newPosition += newPosition < 0 ? Consts.ALPHABET_SIZE : 0;
 
                     return new RotorConfiguration(config.RotorProps,
@@ -102,7 +126,8 @@ namespace Enigma
                         config.RingSetting);
                 }).ToArray();
 
-            _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), newConfig, _enigmaEncryptor.GetReflector());
+            _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), newConfig,
+                _enigmaEncryptor.GetReflector());
         }
 
         public void SetEnigmaRotorType(RotorsPlacement rotor, RotorProps rotorProps)
@@ -116,18 +141,21 @@ namespace Enigma
                 previousRotorConfig.StepCallback,
                 previousRotorConfig.RingSetting);
 
-            _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), currentEncryptorConfig, _enigmaEncryptor.GetReflector());
+            _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), currentEncryptorConfig,
+                _enigmaEncryptor.GetReflector());
         }
 
         private List<RotorConfiguration> BuildCurrentEncryptorConfig()
         {
             List<int> positions = GetRotorPositions();
-            return _enigmaEncryptor.GetInitialConfiguration().Zip(positions, (configuration, position) => (configuration, position)).Select(configPositionTuple => {
-                RotorConfiguration config = configPositionTuple.configuration;
-                int position = configPositionTuple.position;
+            return _enigmaEncryptor.GetInitialConfiguration()
+                .Zip(positions, (configuration, position) => (configuration, position)).Select(configPositionTuple => {
+                    RotorConfiguration config = configPositionTuple.configuration;
+                    int position = configPositionTuple.position;
 
-                return new RotorConfiguration(config.RotorProps, (char)('A' + position), config.StepCallback, config.RingSetting);
-            }).ToList();
+                    return new RotorConfiguration(config.RotorProps, (char)('A' + position), config.StepCallback,
+                        config.RingSetting);
+                }).ToList();
         }
 
         private static int GetRotorIndexByPlacement(RotorsPlacement placement)
@@ -154,7 +182,8 @@ namespace Enigma
             if (DOTween.IsTweening(_cameraTransform))
                 _cameraTransform.DOKill();
 
-            _cameraTransform.DOMove(alignmentTransform.position, 1f).OnComplete(() => _menuController.ModeSwitchAnimationCallback(mode));
+            _cameraTransform.DOMove(alignmentTransform.position, 1f)
+                .OnComplete(() => _menuController.ModeSwitchAnimationCallback(mode));
             _cameraTransform.DORotate(alignmentTransform.rotation.eulerAngles, 1f);
 
             if (mode != EnigmaOperationMode.Type)

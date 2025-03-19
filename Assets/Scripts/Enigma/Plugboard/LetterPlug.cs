@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Enigma
+namespace Enigma.Plugboard
 {
     public class LetterPlug : MonoBehaviour
     {
