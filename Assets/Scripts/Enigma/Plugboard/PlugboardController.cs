@@ -1,6 +1,7 @@
 ﻿using AYellowpaper.SerializedCollections;
 using Encryption;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Enigma.Plugboard
 {
@@ -38,6 +39,7 @@ namespace Enigma.Plugboard
         };
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private EnigmaController _enigmaController;
+        [SerializeField] private PlugboardCableConnectorController _plugboardConnectorController;
 
         private static readonly Color[] PlugboardColors =
         {
@@ -136,6 +138,9 @@ namespace Enigma.Plugboard
             _enigmaController.AddNewTransposition(_lastLetterPlugHit.tag[0], secondPlug.tag[0]);
             secondPlug.Outline.OutlineColor = _lastLetterPlugHit.Outline.OutlineColor;
             secondPlug.Outline.enabled = true;
+            _plugboardConnectorController.RenderNewConnection(_lastLetterPlugHit, secondPlug,
+                _lastLetterPlugHit.Outline.OutlineColor);
+
             _lastLetterPlugHit = null;
         }
     }
