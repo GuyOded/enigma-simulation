@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -6,7 +7,8 @@ namespace Enigma.Plugboard
 {
     public class PlugboardCableConnectorController : MonoBehaviour
     {
-        [SerializeField] private SplineContainer[] _splineContainers;
+        private static readonly int Color1 = Shader.PropertyToID("_Color");
+        [SerializeField] private SplineMaterialContainer[] _splineContainers;
         [SerializeField] private LetterPlug _topPlug;
         [SerializeField] private LetterPlug _bottomPlug;
         [SerializeField] private Collider _letterPlugCollider; // Example collider to find sizes and lengths and such
@@ -15,9 +17,9 @@ namespace Enigma.Plugboard
 
         private void Start()
         {
-            foreach (SplineContainer splineContainer in _splineContainers)
+            foreach (SplineMaterialContainer splineMaterialContainer in _splineContainers)
             {
-                splineContainer.gameObject.SetActive(false);
+                splineMaterialContainer.SplineContainer.gameObject.SetActive(false);
             }
 
             float plugRadius = Mathf.Abs(_letterPlugCollider.bounds.max.y - _letterPlugCollider.bounds.min.y) / 2;
@@ -32,10 +34,33 @@ namespace Enigma.Plugboard
 
         public void RenderNewConnection(LetterPlug first, LetterPlug second, Color color)
         {
-            SplineContainer splineContainer = _splineContainers.First(container => !container.gameObject.activeSelf);
+            SplineMaterialContainer splineMaterialContainer =
+                _splineContainers.First(container => !container.SplineContainer.gameObject.activeInHierarchy);
             Spline connection = _splineGenerator.GenerateSpline(first, second);
-            splineContainer.AddSpline(connection);
-            splineContainer.gameObject.SetActive(true);
+            splineMaterialContainer.SplineContainer.AddSpline(connection);
+
+            // Change Color
+            splineMaterialContainer.MeshRenderer.material.SetColor(Color1, color);
+            splineMaterialContainer.SplineContainer.gameObject.SetActive(true);
+        }
+    }
+
+    [Serializable]
+    public class SplineMaterialContainer
+    {
+        [SerializeField] private SplineContainer _splineContainer;
+        [SerializeField] private MeshRenderer _meshRenderer;
+
+        public SplineContainer SplineContainer
+        {
+            get => _splineContainer;
+            private set => _splineContainer = value;
+        }
+
+        public MeshRenderer MeshRenderer
+        {
+            get => _meshRenderer;
+            private set => _meshRenderer = value;
         }
     }
 }
