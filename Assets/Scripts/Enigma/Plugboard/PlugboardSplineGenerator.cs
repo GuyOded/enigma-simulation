@@ -1,4 +1,3 @@
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -22,12 +21,7 @@ namespace Enigma.Plugboard
 
         public Spline GenerateSpline(LetterPlug first, LetterPlug second)
         {
-            if (IsNearestNeighbour(first, second))
-            {
-                return GenerateNearestNeighbourSpline(first, second);
-            }
-
-            return new Spline();
+            return GenerateNearestNeighbourSpline(first, second);
         }
 
         private Spline GenerateNearestNeighbourSpline(LetterPlug first, LetterPlug second)

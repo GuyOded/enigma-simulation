@@ -85,6 +85,21 @@ namespace Enigma.Plugboard
             _isClickEventsActive = false;
         }
 
+        public static bool IsTopPlug(LetterPlug plug)
+        {
+            return plug.tag.ToUpper()[0] >= 'A' || plug.tag.ToUpper()[0] <= 'I';
+        }
+
+        public static bool IsMiddlePlug(LetterPlug plug)
+        {
+            return plug.tag.ToUpper()[0] >= 'J' || plug.tag.ToUpper()[0] <= 'Q';
+        }
+
+        public static bool IsBottomPlug(LetterPlug plug)
+        {
+            return plug.tag.ToUpper()[0] >= 'R' || plug.tag.ToUpper()[0] <= 'Z';
+        }
+
         private void CastRayInMouseDirection()
         {
             Ray outgoingRay = _mainCamera.ScreenPointToRay(Input.mousePosition);

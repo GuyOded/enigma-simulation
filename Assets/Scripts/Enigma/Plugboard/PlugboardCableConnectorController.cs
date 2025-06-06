@@ -8,11 +8,13 @@ namespace Enigma.Plugboard
     public class PlugboardCableConnectorController : MonoBehaviour
     {
         private static readonly int Color1 = Shader.PropertyToID("_Color");
+
         [SerializeField] private SplineMaterialContainer[] _splineContainers;
         [SerializeField] private LetterPlug _topPlug;
         [SerializeField] private LetterPlug _bottomPlug;
         [SerializeField] private Collider _letterPlugCollider; // Example collider to find sizes and lengths and such
         [SerializeField] private Transform _splineContainerPool;
+
         private PlugboardSplineGenerator _splineGenerator;
 
         private void Start()
@@ -29,7 +31,7 @@ namespace Enigma.Plugboard
 
             _splineGenerator =
                 new PlugboardSplineGenerator(plugRadius, nearestNeighboursDistanceThreshold,
-                    _splineContainerPool.position);
+                    _splineContainerPool.position, 0);
         }
 
         public void RenderNewConnection(LetterPlug first, LetterPlug second, Color color)
@@ -61,6 +63,34 @@ namespace Enigma.Plugboard
         {
             get => _meshRenderer;
             private set => _meshRenderer = value;
+        }
+    }
+
+    /// <summary>
+    /// Contains horizontal connection paths information so that overlaps in connections can be avoided.
+    /// </summary>
+    public class ConnectionsPaths
+    {
+        ConnectionsPaths(ref int[] topRow, ref int[] middleRow, ref int[] bottomRow)
+        {
+            TopRow = topRow;
+            MiddleRow = middleRow;
+            BottomRow = bottomRow;
+        }
+
+        public int[] BottomRow
+        {
+            get;
+        }
+
+        public int[] MiddleRow
+        {
+            get;
+        }
+
+        public int[] TopRow
+        {
+            get;
         }
     }
 }
