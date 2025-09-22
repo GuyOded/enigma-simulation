@@ -5847,8 +5847,10 @@ MonoBehaviour:
     _meshRenderer: {fileID: 2063773105}
   - _splineContainer: {fileID: 375146178}
     _meshRenderer: {fileID: 375146180}
-  _topPlug: {fileID: 807989269}
-  _bottomPlug: {fileID: 1396769839}
+  _APlug: {fileID: 807989269}
+  _BPlug: {fileID: 1908978581}
+  _JPlug: {fileID: 247174850}
+  _RPlug: {fileID: 1396769839}
   _letterPlugCollider: {fileID: 1396769840}
   _splineContainerPool: {fileID: 2122880252}
 --- !u!1 &966607780

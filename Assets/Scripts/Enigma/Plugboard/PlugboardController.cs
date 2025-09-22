@@ -1,7 +1,6 @@
 ﻿using AYellowpaper.SerializedCollections;
 using Encryption;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Enigma.Plugboard
 {
