@@ -1,12 +1,17 @@
 ﻿using AYellowpaper.SerializedCollections;
-using Encryption;
+using Consts;
+using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enigma.Plugboard
 {
     public class PlugboardController : MonoBehaviour
     {
-        [SerializedDictionary("Letter", "Game Object")] [SerializeField]
+        [SerializedDictionary("Letter", "Game Object")]
+        [SerializeField]
         private SerializedDictionary<char, LetterPlug> _letterPlugsMap = new()
         {
             { 'A', null },
@@ -39,6 +44,8 @@ namespace Enigma.Plugboard
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private EnigmaController _enigmaController;
         [SerializeField] private PlugboardCableConnectorController _plugboardConnectorController;
+        [SerializeField] private Transform _deleteConnectionPopupCanvas;
+        [SerializeField] private Transform _deleteConnectionPopupMenu;
 
         private static readonly Color[] PlugboardColors =
         {
@@ -60,10 +67,12 @@ namespace Enigma.Plugboard
 
         private LetterPlug _lastLetterPlugHit = null;
         private bool _isClickEventsActive;
+        private TweenerCore<Vector3, Vector3, VectorOptions> _scaleTween = null;
 
         private void Start()
         {
             _isClickEventsActive = false;
+            _deleteConnectionPopupCanvas.gameObject.SetActive(false);
         }
 
         private void Update()
@@ -86,23 +95,23 @@ namespace Enigma.Plugboard
 
         public static bool IsTopPlug(LetterPlug plug)
         {
-            return plug.tag.ToUpper()[0] >= 'A' || plug.tag.ToUpper()[0] <= 'I';
+            return plug.tag.ToUpper()[0] >= LetterPlacement.TopRowRange.Item1 || plug.tag.ToUpper()[0] <= LetterPlacement.TopRowRange.Item2;
         }
 
         public static bool IsMiddlePlug(LetterPlug plug)
         {
-            return plug.tag.ToUpper()[0] >= 'J' || plug.tag.ToUpper()[0] <= 'Q';
+            return plug.tag.ToUpper()[0] >= LetterPlacement.MidRowRange.Item1 || plug.tag.ToUpper()[0] <= LetterPlacement.MidRowRange.Item2;
         }
 
         public static bool IsBottomPlug(LetterPlug plug)
         {
-            return plug.tag.ToUpper()[0] >= 'R' || plug.tag.ToUpper()[0] <= 'Z';
+            return plug.tag.ToUpper()[0] >= LetterPlacement.BotRowRange.Item1 || plug.tag.ToUpper()[0] <= LetterPlacement.BotRowRange.Item2;
         }
 
         private void CastRayInMouseDirection()
         {
             Ray outgoingRay = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(outgoingRay, out RaycastHit hit, RAYCAST_LENGTH, LayerMask.GetMask("LetterPlugs")))
+            if (!Physics.Raycast(outgoingRay, out RaycastHit hit, RAYCAST_LENGTH, LayerMask.GetMask(LayerNames.LETTER_PLUGS, LayerNames.SPLINES)))
             {
                 if (_lastLetterPlugHit)
                 {
@@ -111,10 +120,30 @@ namespace Enigma.Plugboard
                 return;
             }
 
-            char letter = hit.collider.tag[0];
+
+            int hitLayer = hit.transform.gameObject.layer;
+            if (hitLayer == LayerMask.NameToLayer(LayerNames.LETTER_PLUGS))
+            {
+                HandlePlugClick(hit.transform.tag[0], hit.transform.tag, hit.transform);
+            }
+
+            if (hitLayer == LayerMask.NameToLayer(LayerNames.SPLINES))
+            {
+                // do something
+            }
+        }
+
+        private void HandlePlugClick(char letter, string hitTag, Transform hitTransform)
+        {
             if (!_letterPlugsMap.TryGetValue(letter, out LetterPlug hitPlug))
             {
-                Debug.LogError($"Raycast hit but found no object in letter to object map. Tag hit is {hit.collider.tag}");
+                Debug.Log($"Raycast hit but found no object in letter to object map. Tag hit is {hitTag}");
+                return;
+            }
+
+            if (_enigmaController.GetLetterTranspositions().Keys.Contains(letter) || _enigmaController.GetLetterTranspositions().Values.Contains(letter))
+            {
+                ShowDeleteConnectionMenu(hitTransform.position);
                 return;
             }
 
@@ -130,6 +159,15 @@ namespace Enigma.Plugboard
             PairNewTransposition(hitPlug);
         }
 
+        private void ShowDeleteConnectionMenu(Vector3 position)
+        {
+            _deleteConnectionPopupCanvas.position = position;
+            _scaleTween?.Kill();
+            _deleteConnectionPopupMenu.localScale = new Vector3(0.0001f, 0.0001f, 1);
+            _deleteConnectionPopupCanvas.gameObject.SetActive(true);
+            _scaleTween = _deleteConnectionPopupMenu.DOScale(new Vector3(0.001f, 0.001f, 1), 0.5f).SetEase(Ease.InOutElastic);
+        }
+
         private void ClearSelection()
         {
             _lastLetterPlugHit.Outline.enabled = false;
@@ -139,7 +177,7 @@ namespace Enigma.Plugboard
         private void SelectLetterPlug(LetterPlug selected)
         {
             int transpositionsCount = _enigmaController.GetLetterTranspositions().Count;
-            if (transpositionsCount >= Consts.ALPHABET_SIZE)
+            if (transpositionsCount >= Encryption.Consts.ALPHABET_SIZE)
                 return;
 
             selected.Outline.OutlineColor = PlugboardColors[transpositionsCount / 2];
@@ -156,6 +194,11 @@ namespace Enigma.Plugboard
                 _lastLetterPlugHit.Outline.OutlineColor);
 
             _lastLetterPlugHit = null;
+        }
+
+        private void RemoveTransposition(LetterPlug remove)
+        {
+            // Check if letter plug is connected.
         }
     }
 }

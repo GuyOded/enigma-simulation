@@ -18,7 +18,7 @@ namespace Enigma
         [SerializeField] private Transform _leftGear;
         [SerializeField] private Transform _leftLetterWheel;
 
-        [Range(0.1f, 1)] [SerializeField] private float _stepAnimationDuration = 0.1f;
+        [Range(0.1f, 1)][SerializeField] private float _stepAnimationDuration = 0.1f;
 
         private readonly Queue<(Transform gear, Transform letterWheel, bool rotateBack)> _animationQueue = new();
 
@@ -36,8 +36,8 @@ namespace Enigma
 
             (Transform gear, Transform letterWheel, bool rotateBack) = _animationQueue.Dequeue();
             int directionScaler = rotateBack ? -1 : 1;
-            gear.DOLocalRotate(Vector3.up * (-(360f / Consts.ALPHABET_SIZE) * directionScaler), _stepAnimationDuration, RotateMode.LocalAxisAdd);
-            letterWheel.DORotate(Vector3.up * (-(360f / Consts.ALPHABET_SIZE) * directionScaler), _stepAnimationDuration, RotateMode.LocalAxisAdd);
+            gear.DOLocalRotate(Vector3.up * (-(360f / Encryption.Consts.ALPHABET_SIZE) * directionScaler), _stepAnimationDuration, RotateMode.LocalAxisAdd);
+            letterWheel.DORotate(Vector3.up * (-(360f / Encryption.Consts.ALPHABET_SIZE) * directionScaler), _stepAnimationDuration, RotateMode.LocalAxisAdd);
         }
 
         public ICollection<RotorConfiguration> GetDefaultRotorsConfig()
@@ -81,8 +81,8 @@ namespace Enigma
                 return;
             }
 
-            gear.localRotation *= Quaternion.Euler(gear.localRotation.eulerAngles + Vector3.up * (-360f / Consts.ALPHABET_SIZE) * steps);
-            letterWheel.Rotate(Vector3.up, (-360f / Consts.ALPHABET_SIZE) * steps);
+            gear.localRotation *= Quaternion.Euler(gear.localRotation.eulerAngles + Vector3.up * (-360f / Encryption.Consts.ALPHABET_SIZE) * steps);
+            letterWheel.Rotate(Vector3.up, -360f / Encryption.Consts.ALPHABET_SIZE * steps);
         }
 
         public void RotateRotor(RotorsPlacement rotor, int steps)
@@ -95,8 +95,8 @@ namespace Enigma
                 _ => throw new ArgumentOutOfRangeException(nameof(rotor), rotor, null)
             };
 
-            letterWheel.DOLocalRotate(Vector3.up * (-360f / Consts.ALPHABET_SIZE) * steps, 1, RotateMode.LocalAxisAdd);
-            gear.DOLocalRotate(Vector3.up * (-360f / Consts.ALPHABET_SIZE) * steps, 1, RotateMode.LocalAxisAdd);
+            letterWheel.DOLocalRotate(Vector3.up * (-360f / Encryption.Consts.ALPHABET_SIZE) * steps, 1, RotateMode.LocalAxisAdd);
+            gear.DOLocalRotate(Vector3.up * (-360f / Encryption.Consts.ALPHABET_SIZE) * steps, 1, RotateMode.LocalAxisAdd);
         }
 
         private void RotateRotorOneStep(Transform gear, Transform letterWheel, bool rotateBack = false)

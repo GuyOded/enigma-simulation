@@ -86,7 +86,7 @@ namespace Enigma
             }
 
             int forwardSteps = letter[0] - currentRotorPosition[0];
-            int backwardSteps = letter[0] - currentRotorPosition[0] - Consts.ALPHABET_SIZE;
+            int backwardSteps = letter[0] - currentRotorPosition[0] - Encryption.Consts.ALPHABET_SIZE;
             int steps = math.abs(forwardSteps) <= math.abs(backwardSteps) ? forwardSteps : backwardSteps;
             _enigmaController.RotateRotor(placement, steps);
         }

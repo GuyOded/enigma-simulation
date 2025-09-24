@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+using Consts;
 using UnityEngine.Splines;
 
 namespace Enigma.Plugboard
@@ -10,9 +10,6 @@ namespace Enigma.Plugboard
     public class PlugboardCableConnectorController : MonoBehaviour
     {
         private static readonly int Color1 = Shader.PropertyToID("_Color");
-        private static readonly (char, char) TopRowRange = ('A', 'I');
-        private static readonly (char, char) MidRowRange = ('J', 'Q');
-        private static readonly (char, char) BotRowRange = ('R', 'Z');
 
         [SerializeField] private SplineMaterialContainer[] _splineContainers;
         [SerializeField] private LetterPlug _APlug;
@@ -65,17 +62,17 @@ namespace Enigma.Plugboard
             if (IsTopRow(first) && IsTopRow(second))
             {
                 rowConnections = _topConnections;
-                rowFirstLetter = TopRowRange.Item1;
+                rowFirstLetter = LetterPlacement.TopRowRange.Item1;
             }
             else if (IsMidRow(first) && IsMidRow(second))
             {
                 rowConnections = _midConnections;
-                rowFirstLetter = MidRowRange.Item1;
+                rowFirstLetter = LetterPlacement.MidRowRange.Item1;
             }
             else if (IsBotRow(first) && IsBotRow(second))
             {
                 rowConnections = _botConnections;
-                rowFirstLetter = BotRowRange.Item1;
+                rowFirstLetter = LetterPlacement.BotRowRange.Item1;
             }
             else
             {
@@ -107,19 +104,19 @@ namespace Enigma.Plugboard
         private static bool IsTopRow(LetterPlug letterPlug)
         {
             char letter = letterPlug.tag[0];
-            return IsInRow(TopRowRange, letter);
+            return IsInRow(LetterPlacement.TopRowRange, letter);
         }
 
         private static bool IsMidRow(LetterPlug letterPlug)
         {
             char letter = letterPlug.tag[0];
-            return IsInRow(MidRowRange, letter);
+            return IsInRow(LetterPlacement.MidRowRange, letter);
         }
 
         private static bool IsBotRow(LetterPlug letterPlug)
         {
             char letter = letterPlug.tag[0];
-            return IsInRow(BotRowRange, letter);
+            return IsInRow(LetterPlacement.BotRowRange, letter);
         }
 
         private static bool IsInRow((char, char) rowLetterRange, char letter)

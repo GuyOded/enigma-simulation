@@ -117,11 +117,11 @@ namespace Enigma
                 .Select((configPositionTuple, index) => {
                     RotorConfiguration config = configPositionTuple.configuration;
                     int newPosition = (configPositionTuple.position + (rotorIndex == index ? stepsToRotate : 0)) %
-                                      Consts.ALPHABET_SIZE;
-                    newPosition += newPosition < 0 ? Consts.ALPHABET_SIZE : 0;
+                                      Encryption.Consts.ALPHABET_SIZE;
+                    newPosition += newPosition < 0 ? Encryption.Consts.ALPHABET_SIZE : 0;
 
                     return new RotorConfiguration(config.RotorProps,
-                        (char)(Consts.FIRST_LETTER + newPosition),
+                        (char)(Encryption.Consts.FIRST_LETTER + newPosition),
                         config.StepCallback,
                         config.RingSetting);
                 }).ToArray();

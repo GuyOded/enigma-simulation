@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6429425230074877584}
   - component: {fileID: 3058194906302045998}
   - component: {fileID: 7089845699626963795}
-  m_Layer: 0
+  - component: {fileID: 1194610821922955978}
+  m_Layer: 7
   m_Name: Spline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,3 +135,25 @@ MonoBehaviour:
   m_Capped: 1
   m_Radius: 0.0008
   m_Range: {x: 0, y: 1}
+--- !u!64 &1194610821922955978
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9200971292000365824}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 3399c1afa223c3b4b9290c147d2ec1e8, type: 2}
