@@ -3,7 +3,6 @@ using Consts;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Enigma.Plugboard
@@ -46,6 +45,7 @@ namespace Enigma.Plugboard
         [SerializeField] private PlugboardCableConnectorController _plugboardConnectorController;
         [SerializeField] private Transform _deleteConnectionPopupCanvas;
         [SerializeField] private Transform _deleteConnectionPopupMenu;
+        [SerializeField] private Collider _plugCollider;
 
         private static readonly Color[] PlugboardColors =
         {
@@ -66,6 +66,7 @@ namespace Enigma.Plugboard
         private const float RAYCAST_LENGTH = 100f;
 
         private LetterPlug _lastLetterPlugHit = null;
+        private float _plugRadius;
         private bool _isClickEventsActive;
         private TweenerCore<Vector3, Vector3, VectorOptions> _scaleTween = null;
 
@@ -73,6 +74,7 @@ namespace Enigma.Plugboard
         {
             _isClickEventsActive = false;
             _deleteConnectionPopupCanvas.gameObject.SetActive(false);
+            _plugRadius = Mathf.Abs(_plugCollider.bounds.max.y - _plugCollider.bounds.min.y) / 2;
         }
 
         private void Update()
@@ -117,6 +119,7 @@ namespace Enigma.Plugboard
                 {
                     ClearSelection();
                 }
+                HideDeleteConnectionMenu();
                 return;
             }
 
@@ -143,7 +146,7 @@ namespace Enigma.Plugboard
 
             if (_enigmaController.GetLetterTranspositions().Keys.Contains(letter) || _enigmaController.GetLetterTranspositions().Values.Contains(letter))
             {
-                ShowDeleteConnectionMenu(hitTransform.position);
+                ShowDeleteConnectionMenu(hitTransform.position + Vector3.up * _plugRadius);
                 return;
             }
 
@@ -163,9 +166,15 @@ namespace Enigma.Plugboard
         {
             _deleteConnectionPopupCanvas.position = position;
             _scaleTween?.Kill();
-            _deleteConnectionPopupMenu.localScale = new Vector3(0.0001f, 0.0001f, 1);
+            _deleteConnectionPopupMenu.localScale = Vector3.zero + Vector3.forward;
             _deleteConnectionPopupCanvas.gameObject.SetActive(true);
-            _scaleTween = _deleteConnectionPopupMenu.DOScale(new Vector3(0.001f, 0.001f, 1), 0.5f).SetEase(Ease.InOutElastic);
+            _scaleTween = _deleteConnectionPopupMenu.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutElastic);
+        }
+
+        private void HideDeleteConnectionMenu()
+        {
+            _scaleTween?.Kill();
+            _deleteConnectionPopupCanvas.gameObject.SetActive(false);
         }
 
         private void ClearSelection()
