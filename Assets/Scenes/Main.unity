@@ -6148,8 +6148,6 @@ MonoBehaviour:
   - _splineContainer: {fileID: 375146178}
     _meshRenderer: {fileID: 375146180}
   _APlug: {fileID: 807989269}
-  _BPlug: {fileID: 1908978581}
-  _JPlug: {fileID: 247174850}
   _RPlug: {fileID: 1396769839}
   _letterPlugCollider: {fileID: 1396769840}
   _splineContainerPool: {fileID: 2122880252}
@@ -7710,7 +7708,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 952891114}
         m_TargetAssemblyTypeName: Enigma.Plugboard.PlugboardController, Assembly-CSharp
-        m_MethodName: HideDeleteConnectionMenu
+        m_MethodName: HideDeleteConnectionPopupMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15466,7 +15464,7 @@ GameObject:
   - component: {fileID: 1963988411}
   - component: {fileID: 1963988410}
   m_Layer: 5
-  m_Name: Button
+  m_Name: DeleteButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15534,7 +15532,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1963988411}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 952891114}
+        m_TargetAssemblyTypeName: Enigma.Plugboard.PlugboardController, Assembly-CSharp
+        m_MethodName: OnPopupMenuDelete
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1963988411
 MonoBehaviour:
   m_ObjectHideFlags: 0

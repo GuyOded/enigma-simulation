@@ -71,6 +71,7 @@ namespace Enigma.Plugboard
         private float _plugRadius;
         private bool _isClickEventsActive;
         private TweenerCore<Vector3, Vector3, VectorOptions> _scaleTween = null;
+        private (char, char)? _deleteMenuLetters = null;
 
         private void Start()
         {
@@ -175,6 +176,7 @@ namespace Enigma.Plugboard
         {
             Vector3 screenPoint = _mainCamera.WorldToScreenPoint(position);
             _deleteConnectionPopupMenu.anchoredPosition = screenPoint;
+            _deleteMenuLetters = letters;
             _deleteConnectionPopupMenuText.text = $"{letters.Item1}-{letters.Item2}";
             _scaleTween?.Kill();
             _deleteConnectionPopupMenu.localScale = Vector3.zero + Vector3.forward;
@@ -182,10 +184,21 @@ namespace Enigma.Plugboard
             _scaleTween = _deleteConnectionPopupMenu.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutElastic);
         }
 
-        public void HideDeleteConnectionMenu()
+        public void HideDeleteConnectionPopupMenu()
         {
             _scaleTween?.Kill();
             _deleteConnectionPopupCanvas.gameObject.SetActive(false);
+            _deleteMenuLetters = null;
+        }
+
+        public void OnPopupMenuDelete()
+        {
+            if (!_deleteMenuLetters.HasValue)
+            {
+                Debug.LogWarning("Delete button in popup menu clicked with no letters assigned.");
+            }
+            RemoveTransposition(_deleteMenuLetters.Value.Item1, _deleteMenuLetters.Value.Item2);
+            HideDeleteConnectionPopupMenu();
         }
 
         private void ClearSelection()
@@ -216,9 +229,19 @@ namespace Enigma.Plugboard
             _lastLetterPlugHit = null;
         }
 
-        private void RemoveTransposition(LetterPlug remove)
+        private void RemoveTransposition(char first, char second)
         {
-            // Check if letter plug is connected.
+            _enigmaController.RemoveTransposition(first, second);
+            ClearPlugOutline(first);
+            ClearPlugOutline(second);
+
+            _plugboardConnectorController.RemoveTranspositionSpline(first, second);
+        }
+
+        private void ClearPlugOutline(char letter)
+        {
+            LetterPlug plug = _letterPlugsMap[letter];
+            plug.Outline.enabled = false;
         }
     }
 }

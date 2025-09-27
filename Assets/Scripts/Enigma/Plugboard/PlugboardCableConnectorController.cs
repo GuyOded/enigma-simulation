@@ -4,6 +4,8 @@ using System.Linq;
 using UnityEngine;
 using Consts;
 using UnityEngine.Splines;
+using UnityEditor.PackageManager;
+using Mono.Cecil;
 
 namespace Enigma.Plugboard
 {
@@ -18,10 +20,10 @@ namespace Enigma.Plugboard
         [SerializeField] private Transform _splineContainerPool;
 
         private PlugboardSplineGenerator _splineGenerator;
-        private Dictionary<GameObject, (LetterPlug, LetterPlug)> _splineToConnectedPlugs = new();
-        private List<RowPath> _topConnections = new();
-        private List<RowPath> _midConnections = new();
-        private List<RowPath> _botConnections = new();
+        private readonly Dictionary<SplineContainer, (LetterPlug, LetterPlug)> _splineToConnectedPlugs = new();
+        private readonly List<RowPath> _topConnections = new();
+        private readonly List<RowPath> _midConnections = new();
+        private readonly List<RowPath> _botConnections = new();
         private float _initialSplineXPosition;
         private float _rowConnectionXInterval = 0.00001f;
 
@@ -51,7 +53,7 @@ namespace Enigma.Plugboard
                 _splineContainers.First(container => !container.SplineContainer.gameObject.activeInHierarchy);
             Spline connection = _splineGenerator.GenerateSpline(first, second);
             splineMaterialContainer.SplineContainer.AddSpline(connection);
-            _splineToConnectedPlugs.Add(splineMaterialContainer.SplineContainer.gameObject, (first, second));
+            _splineToConnectedPlugs.Add(splineMaterialContainer.SplineContainer, (first, second));
 
             // Change Color
             splineMaterialContainer.MeshRenderer.material.SetColor(Color1, color);
@@ -59,25 +61,15 @@ namespace Enigma.Plugboard
 
             List<RowPath> rowConnections;
             char rowFirstLetter;
-            if (IsTopRow(first) && IsTopRow(second))
-            {
-                rowConnections = _topConnections;
-                rowFirstLetter = LetterPlacement.TopRowRange.Item1;
-            }
-            else if (IsMidRow(first) && IsMidRow(second))
-            {
-                rowConnections = _midConnections;
-                rowFirstLetter = LetterPlacement.MidRowRange.Item1;
-            }
-            else if (IsBotRow(first) && IsBotRow(second))
-            {
-                rowConnections = _botConnections;
-                rowFirstLetter = LetterPlacement.BotRowRange.Item1;
-            }
-            else
+
+            (List<RowPath>, (char, char))? rowConnectionsToRange = GetRowConnectionsFromLetterPlugs(first, second);
+            if (!rowConnectionsToRange.HasValue)
             {
                 return;
             }
+
+            rowConnections = rowConnectionsToRange.Value.Item1;
+            rowFirstLetter = rowConnectionsToRange.Value.Item2.Item1;
 
             char firstLetter = first.tag[0].ToString().ToUpper()[0];
             char secondLetter = second.tag[0].ToString().ToUpper()[0];
@@ -92,12 +84,32 @@ namespace Enigma.Plugboard
 
         public (char, char)? FindLettersFromSpline(GameObject spline)
         {
-            if (!_splineToConnectedPlugs.TryGetValue(spline, out (LetterPlug, LetterPlug) plugs))
+            return _splineToConnectedPlugs.Where(kvp => kvp.Key.gameObject == spline).Select(kvp => LetterPlugsToCorrespondingLetters(kvp.Value)).FirstOrDefault();
+        }
+
+        public void RemoveTranspositionSpline(char first, char second)
+        {
+            KeyValuePair<SplineContainer, (LetterPlug, LetterPlug)> splineToPlugsKvp = _splineToConnectedPlugs.FirstOrDefault(kvp => LetterPlugsToCorrespondingLetters(kvp.Value) == (first, second) ||
+            LetterPlugsToCorrespondingLetters(kvp.Value) == (second, first));
+
+            splineToPlugsKvp.Key.gameObject.SetActive(false);
+            _splineToConnectedPlugs.Remove(splineToPlugsKvp.Key);
+            splineToPlugsKvp.Key.Spline.Clear();
+
+            LetterPlug firstPlug = splineToPlugsKvp.Value.Item1;
+            LetterPlug secondPlug = splineToPlugsKvp.Value.Item2;
+
+            (List<RowPath>, (char, char))? rowPathsToLetterRange = GetRowConnectionsFromLetterPlugs(firstPlug, secondPlug);
+            if (!rowPathsToLetterRange.HasValue)
             {
-                return null;
+                return;
             }
 
-            return (plugs.Item1.tag.ToUpper()[0], plugs.Item2.tag.ToUpper()[0]);
+            int removedElements = rowPathsToLetterRange.Value.Item1.RemoveAll(rowPath => rowPath.SplineProp.gameObject == splineToPlugsKvp.Key.gameObject);
+            if (removedElements != 1)
+            {
+                throw new Exception($"Removed unexpected amount of row paths from list {first}:{second}. Removed amount: {removedElements}");
+            }
         }
 
         private void AdjustZPositionForRowConnections(List<RowPath> rowConnections)
@@ -108,6 +120,33 @@ namespace Enigma.Plugboard
                 Vector3 currentPosition = connection.SplineProp.transform.position;
                 connection.SplineProp.transform.position = new Vector3(_initialSplineXPosition + index * _rowConnectionXInterval, currentPosition.y, currentPosition.z);
                 index++;
+            }
+        }
+
+        /// <summary>
+        /// Returns a two-tuple of relevant rowPaths list and the corresponding row range of the row if both first and second are in the same plug row.
+        /// Null if they are not in the same plug row.
+        /// </summary>
+        /// <param name="first"></param>
+        /// <param name="second"></param>
+        /// <returns></returns>
+        private (List<RowPath>, (char, char))? GetRowConnectionsFromLetterPlugs(LetterPlug first, LetterPlug second)
+        {
+            if (IsTopRow(first) && IsTopRow(second))
+            {
+                return (_topConnections, LetterPlacement.TopRowRange);
+            }
+            else if (IsMidRow(first) && IsMidRow(second))
+            {
+                return (_midConnections, LetterPlacement.MidRowRange);
+            }
+            else if (IsBotRow(first) && IsBotRow(second))
+            {
+                return (_botConnections, LetterPlacement.BotRowRange);
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -139,6 +178,11 @@ namespace Enigma.Plugboard
             char upper = strLetter.ToUpper()[0];
 
             return upper >= rowLetterRange.Item1 && upper <= rowLetterRange.Item2;
+        }
+
+        private static (char, char) LetterPlugsToCorrespondingLetters((LetterPlug, LetterPlug) plugs)
+        {
+            return (plugs.Item1.tag.ToUpper()[0], plugs.Item2.tag.ToUpper()[0]);
         }
     }
 

@@ -110,6 +110,19 @@ namespace Enigma
                 _enigmaEncryptor.GetReflector());
         }
 
+        public void RemoveTransposition(char first, char second)
+        {
+            IDictionary<char, char> currentTranspositions = _enigmaEncryptor.GetLetterTranspositions();
+            if (!currentTranspositions.ContainsKey(first) || !currentTranspositions.ContainsKey(second))
+            {
+                throw new ArgumentException($"Transposition does not exist, {first}:{second}");
+            }
+
+            Dictionary<char, char> newTranspositions = currentTranspositions.Where(kvp => first != kvp.Key && second != kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+            _enigmaEncryptor = new EnigmaEncryptor(newTranspositions, _enigmaEncryptor.GetInitialConfiguration(), _enigmaEncryptor.GetReflector());
+        }
+
         public int GetRotorPosition(RotorsPlacement placement)
         {
             int rotorIndex = placement switch
@@ -217,7 +230,7 @@ namespace Enigma
             if (mode != EnigmaOperationMode.LettersTranspositions)
             {
                 _plugboardController.DetachClickEvents();
-                _plugboardController.HideDeleteConnectionMenu();
+                _plugboardController.HideDeleteConnectionPopupMenu();
             }
             else
             {
