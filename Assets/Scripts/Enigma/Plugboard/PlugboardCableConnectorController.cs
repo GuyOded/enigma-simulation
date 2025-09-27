@@ -13,13 +13,12 @@ namespace Enigma.Plugboard
 
         [SerializeField] private SplineMaterialContainer[] _splineContainers;
         [SerializeField] private LetterPlug _APlug;
-        [SerializeField] private LetterPlug _BPlug;
-        [SerializeField] private LetterPlug _JPlug;
         [SerializeField] private LetterPlug _RPlug;
         [SerializeField] private Collider _letterPlugCollider; // Example collider to find sizes and lengths and such
         [SerializeField] private Transform _splineContainerPool;
 
         private PlugboardSplineGenerator _splineGenerator;
+        private Dictionary<GameObject, (LetterPlug, LetterPlug)> _splineToConnectedPlugs = new();
         private List<RowPath> _topConnections = new();
         private List<RowPath> _midConnections = new();
         private List<RowPath> _botConnections = new();
@@ -52,6 +51,7 @@ namespace Enigma.Plugboard
                 _splineContainers.First(container => !container.SplineContainer.gameObject.activeInHierarchy);
             Spline connection = _splineGenerator.GenerateSpline(first, second);
             splineMaterialContainer.SplineContainer.AddSpline(connection);
+            _splineToConnectedPlugs.Add(splineMaterialContainer.SplineContainer.gameObject, (first, second));
 
             // Change Color
             splineMaterialContainer.MeshRenderer.material.SetColor(Color1, color);
@@ -79,7 +79,6 @@ namespace Enigma.Plugboard
                 return;
             }
 
-            rowConnections.Sort();
             char firstLetter = first.tag[0].ToString().ToUpper()[0];
             char secondLetter = second.tag[0].ToString().ToUpper()[0];
 
@@ -87,7 +86,18 @@ namespace Enigma.Plugboard
             int upperIndex = Math.Max(firstLetter - rowFirstLetter, secondLetter - rowFirstLetter);
             RowPath rowPath = new(lowerIndex, upperIndex, splineMaterialContainer.SplineContainer);
             rowConnections.Add(rowPath);
+            rowConnections.Sort();
             AdjustZPositionForRowConnections(rowConnections);
+        }
+
+        public (char, char)? FindLettersFromSpline(GameObject spline)
+        {
+            if (!_splineToConnectedPlugs.TryGetValue(spline, out (LetterPlug, LetterPlug) plugs))
+            {
+                return null;
+            }
+
+            return (plugs.Item1.tag.ToUpper()[0], plugs.Item2.tag.ToUpper()[0]);
         }
 
         private void AdjustZPositionForRowConnections(List<RowPath> rowConnections)
@@ -128,7 +138,7 @@ namespace Enigma.Plugboard
             }
             char upper = strLetter.ToUpper()[0];
 
-            return letter >= rowLetterRange.Item1 && letter <= rowLetterRange.Item2;
+            return upper >= rowLetterRange.Item1 && upper <= rowLetterRange.Item2;
         }
     }
 
@@ -152,7 +162,7 @@ namespace Enigma.Plugboard
         }
     }
 
-    public class RowPath : IComparable<RowPath>
+    class RowPath : IComparable<RowPath>
     {
         public RowPath(int lowerIndex, int upperIndex, SplineContainer spline)
         {

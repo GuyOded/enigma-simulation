@@ -78,6 +78,23 @@ namespace Enigma
             return _enigmaEncryptor.GetLetterTranspositions();
         }
 
+        public (char, char)? GetTranspositionByLetter(char letter)
+        {
+            IDictionary<char, char> transpositions = _enigmaEncryptor.GetLetterTranspositions();
+            if (transpositions.ContainsKey(letter))
+            {
+                return new(letter, transpositions[letter]);
+            }
+
+            char? key = transpositions.Where(kvp => kvp.Value == letter).Select(kvp => (char?)kvp.Key).FirstOrDefault();
+            if (key.HasValue)
+            {
+                return new(key.Value, letter);
+            }
+
+            return null;
+        }
+
         public void AddNewTransposition(char first, char second)
         {
             IDictionary<char, char> currentTranspositions = _enigmaEncryptor.GetLetterTranspositions();
@@ -114,7 +131,8 @@ namespace Enigma
             List<int> rotorsPositions = _enigmaEncryptor.GetCurrentRotorPositions();
             ICollection<RotorConfiguration> newConfig = rotorConfiguration
                 .Zip(rotorsPositions, (configuration, position) => (configuration, position))
-                .Select((configPositionTuple, index) => {
+                .Select((configPositionTuple, index) =>
+                {
                     RotorConfiguration config = configPositionTuple.configuration;
                     int newPosition = (configPositionTuple.position + (rotorIndex == index ? stepsToRotate : 0)) %
                                       Encryption.Consts.ALPHABET_SIZE;
@@ -149,7 +167,8 @@ namespace Enigma
         {
             List<int> positions = GetRotorPositions();
             return _enigmaEncryptor.GetInitialConfiguration()
-                .Zip(positions, (configuration, position) => (configuration, position)).Select(configPositionTuple => {
+                .Zip(positions, (configuration, position) => (configuration, position)).Select(configPositionTuple =>
+                {
                     RotorConfiguration config = configPositionTuple.configuration;
                     int position = configPositionTuple.position;
 
@@ -198,6 +217,7 @@ namespace Enigma
             if (mode != EnigmaOperationMode.LettersTranspositions)
             {
                 _plugboardController.DetachClickEvents();
+                _plugboardController.HideDeleteConnectionMenu();
             }
             else
             {

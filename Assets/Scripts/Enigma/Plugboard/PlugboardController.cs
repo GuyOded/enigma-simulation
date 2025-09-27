@@ -3,6 +3,7 @@ using Consts;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using TMPro;
 using UnityEngine;
 
 namespace Enigma.Plugboard
@@ -43,8 +44,9 @@ namespace Enigma.Plugboard
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private EnigmaController _enigmaController;
         [SerializeField] private PlugboardCableConnectorController _plugboardConnectorController;
-        [SerializeField] private Transform _deleteConnectionPopupCanvas;
-        [SerializeField] private Transform _deleteConnectionPopupMenu;
+        [SerializeField] private RectTransform _deleteConnectionPopupCanvas;
+        [SerializeField] private RectTransform _deleteConnectionPopupMenu;
+        [SerializeField] private TMP_Text _deleteConnectionPopupMenuText;
         [SerializeField] private Collider _plugCollider;
 
         private static readonly Color[] PlugboardColors =
@@ -79,7 +81,7 @@ namespace Enigma.Plugboard
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0) && _isClickEventsActive)
+            if (Input.GetMouseButtonDown(0) && _isClickEventsActive && !_deleteConnectionPopupCanvas.gameObject.activeSelf)
             {
                 CastRayInMouseDirection();
             }
@@ -119,7 +121,6 @@ namespace Enigma.Plugboard
                 {
                     ClearSelection();
                 }
-                HideDeleteConnectionMenu();
                 return;
             }
 
@@ -132,7 +133,14 @@ namespace Enigma.Plugboard
 
             if (hitLayer == LayerMask.NameToLayer(LayerNames.SPLINES))
             {
-                // do something
+                (char, char)? plugsConnectedToSpline = _plugboardConnectorController.FindLettersFromSpline(hit.transform.gameObject);
+                if (!plugsConnectedToSpline.HasValue)
+                {
+                    Debug.LogError($"Can't find spline from the raycast hit. Hit: {hit.transform.gameObject}.");
+                    return;
+                }
+
+                ShowDeleteConnectionMenu(hit.point, (plugsConnectedToSpline.Value.Item1, plugsConnectedToSpline.Value.Item2));
             }
         }
 
@@ -144,9 +152,10 @@ namespace Enigma.Plugboard
                 return;
             }
 
-            if (_enigmaController.GetLetterTranspositions().Keys.Contains(letter) || _enigmaController.GetLetterTranspositions().Values.Contains(letter))
+            (char, char)? transposition = _enigmaController.GetTranspositionByLetter(letter);
+            if (transposition.HasValue)
             {
-                ShowDeleteConnectionMenu(hitTransform.position + Vector3.up * _plugRadius);
+                ShowDeleteConnectionMenu(hitTransform.position + Vector3.up * _plugRadius, transposition.Value);
                 return;
             }
 
@@ -162,16 +171,18 @@ namespace Enigma.Plugboard
             PairNewTransposition(hitPlug);
         }
 
-        private void ShowDeleteConnectionMenu(Vector3 position)
+        private void ShowDeleteConnectionMenu(Vector3 position, (char, char) letters)
         {
-            _deleteConnectionPopupCanvas.position = position;
+            Vector3 screenPoint = _mainCamera.WorldToScreenPoint(position);
+            _deleteConnectionPopupMenu.anchoredPosition = screenPoint;
+            _deleteConnectionPopupMenuText.text = $"{letters.Item1}-{letters.Item2}";
             _scaleTween?.Kill();
             _deleteConnectionPopupMenu.localScale = Vector3.zero + Vector3.forward;
             _deleteConnectionPopupCanvas.gameObject.SetActive(true);
             _scaleTween = _deleteConnectionPopupMenu.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutElastic);
         }
 
-        private void HideDeleteConnectionMenu()
+        public void HideDeleteConnectionMenu()
         {
             _scaleTween?.Kill();
             _deleteConnectionPopupCanvas.gameObject.SetActive(false);

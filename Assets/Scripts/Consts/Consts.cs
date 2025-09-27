@@ -4,6 +4,7 @@ namespace Consts
     {
         public const string LETTER_PLUGS = "LetterPlugs";
         public const string SPLINES = "Splines";
+        public const string UI = "UI";
     }
 
     public static class LetterPlacement

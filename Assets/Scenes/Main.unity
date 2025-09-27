@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.94509804, g: 0.98039216, b: 1, a: 1}
+  m_Color: {r: 0.94509804, g: 0.98039216, b: 1, a: 0.69803923}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1332,6 +1332,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spline (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2484,6 +2489,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spline (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2859,6 +2869,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spline (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3339,8 +3354,8 @@ RectTransform:
   - {fileID: 7744801}
   m_Father: {fileID: 1284530308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 156, y: 164}
   m_Pivot: {x: 0.5, y: 0}
@@ -3784,6 +3799,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spline (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6086,6 +6106,7 @@ MonoBehaviour:
   _plugboardConnectorController: {fileID: 952891115}
   _deleteConnectionPopupCanvas: {fileID: 1284530308}
   _deleteConnectionPopupMenu: {fileID: 541269409}
+  _deleteConnectionPopupMenuText: {fileID: 650582658}
   _plugCollider: {fileID: 1396769840}
 --- !u!114 &952891115
 MonoBehaviour:
@@ -7420,6 +7441,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spline (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7600,6 +7626,138 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1119543643
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1119543644}
+  - component: {fileID: 1119543647}
+  - component: {fileID: 1119543646}
+  - component: {fileID: 1119543645}
+  m_Layer: 5
+  m_Name: ClearButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1119543644
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119543643}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1284530308}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1119543645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119543643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1119543646}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 952891114}
+        m_TargetAssemblyTypeName: Enigma.Plugboard.PlugboardController, Assembly-CSharp
+        m_MethodName: HideDeleteConnectionMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1119543646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119543643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1119543647
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119543643}
+  m_CullTransparentMesh: 1
 --- !u!1 &1121028388 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6887057669018886726, guid: 31c7a2de4db04b84e9ca01f4d2d298d8,
@@ -8023,6 +8181,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spline (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8620,6 +8783,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spline (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8882,7 +9050,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1284530305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8922,7 +9090,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1284530307
 Canvas:
   m_ObjectHideFlags: 0
@@ -8932,7 +9100,7 @@ Canvas:
   m_GameObject: {fileID: 1284530304}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 2
+  m_RenderMode: 0
   m_Camera: {fileID: 2012363218}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -8953,19 +9121,20 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1284530304}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 1.204}
-  m_LocalScale: {x: 0.00007, y: 0.00007, z: 0.00007}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1119543644}
   - {fileID: 541269409}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.12796, y: 1.1813}
-  m_SizeDelta: {x: 2560, y: 1440}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &1297667422
 GameObject:
   m_ObjectHideFlags: 0
@@ -9462,6 +9631,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spline (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12899,6 +13073,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spline (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14451,6 +14630,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spline
       objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14547,6 +14731,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spline (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15018,6 +15207,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spline (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15964,6 +16158,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Spline (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9200971292000365824, guid: fabed1c662349724e8bff80c8045137c,
+        type: 3}
+      propertyPath: m_TagString
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
