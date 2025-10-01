@@ -20,6 +20,9 @@ namespace Enigma
         [SerializeField] private GameObject _rotorConfigCanvas;
         [SerializeField] private Transform[] _rotorsConfigButtons;
 
+        // Transposition config related
+        [SerializeField] private ExpandableSideMenu _transpositionConfigMenu;
+
         private void Start()
         {
             if (!_showInstructionsOnStart)
@@ -42,6 +45,7 @@ namespace Enigma
         {
             _textMenu.Hide(() => _textMenu.gameObject.SetActive(false));
             _rotorConfigMenu.Hide(() => _rotorConfigMenu.gameObject.SetActive(false));
+            _transpositionConfigMenu.Hide(() => _transpositionConfigMenu.gameObject.SetActive(false));
 
             switch (enigmaMode)
             {
@@ -55,6 +59,8 @@ namespace Enigma
                     _rotorMenuController.SetLettersText(_enigmaController.GetRotorPositions());
                     break;
                 case EnigmaOperationMode.LettersTranspositions:
+                    _transpositionConfigMenu.gameObject.SetActive(true);
+                    _transpositionConfigMenu.Show();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(enigmaMode), enigmaMode, null);
