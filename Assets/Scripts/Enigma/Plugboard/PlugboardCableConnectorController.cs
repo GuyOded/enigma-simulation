@@ -4,8 +4,6 @@ using System.Linq;
 using UnityEngine;
 using Consts;
 using UnityEngine.Splines;
-using UnityEditor.PackageManager;
-using Mono.Cecil;
 
 namespace Enigma.Plugboard
 {
@@ -39,11 +37,11 @@ namespace Enigma.Plugboard
 
             float plugRadius = Mathf.Abs(_letterPlugCollider.bounds.max.y - _letterPlugCollider.bounds.min.y) / 2;
             // This is currently irrelevant because I have decided it is not worth calculating a path
-            float nearestNeighboursDistanceThreshold =
+            float nearestNeighborsDistanceThreshold =
                 Vector3.Distance(_APlug.transform.position, _RPlug.transform.position);
 
             _splineGenerator =
-                new PlugboardSplineGenerator(plugRadius, nearestNeighboursDistanceThreshold,
+                new PlugboardSplineGenerator(plugRadius, nearestNeighborsDistanceThreshold,
                     _splineContainerPool.position, 0);
         }
 
@@ -94,7 +92,7 @@ namespace Enigma.Plugboard
 
             splineToPlugsKvp.Key.gameObject.SetActive(false);
             _splineToConnectedPlugs.Remove(splineToPlugsKvp.Key);
-            splineToPlugsKvp.Key.Spline.Clear();
+            splineToPlugsKvp.Key.RemoveSpline(splineToPlugsKvp.Key.Spline);
 
             LetterPlug firstPlug = splineToPlugsKvp.Value.Item1;
             LetterPlug secondPlug = splineToPlugsKvp.Value.Item2;

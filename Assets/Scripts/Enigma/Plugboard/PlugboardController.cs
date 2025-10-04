@@ -1,10 +1,13 @@
-﻿using AYellowpaper.SerializedCollections;
+﻿using System;
+using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using Consts;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using TMPro;
 using UnityEngine;
+using Utils;
 
 namespace Enigma.Plugboard
 {
@@ -98,6 +101,45 @@ namespace Enigma.Plugboard
             _isClickEventsActive = false;
         }
 
+        /// <summary>
+        /// Renders a new transposition connection. Does not add the connection to the enigma controller state (assumes the caller is responsible for that)
+        /// </summary>
+        /// <param name="first">First letter in connection</param>
+        /// <param name="second">Second letter in connection</param>
+        /// <exception cref="ArgumentException">If the chars given are not letters or a transposition including one of them already exist</exception>
+        public void RenderConnection(char first, char second)
+        {
+            if (!StringUtils.IsLetter(first.ToString()) || !StringUtils.IsLetter(second.ToString()))
+            {
+                throw new ArgumentException($"Both arguments must be letters {first}, {second}");
+            }
+
+            IDictionary<char, char> currentTranspositions = _enigmaController.GetLetterTranspositions();
+            if (currentTranspositions.ContainsKey(first) || currentTranspositions.ContainsKey(second))
+            {
+                throw new ArgumentException("Characters given are already exist in a transposition");
+            }
+
+            Color outlineColor = PlugboardColors[currentTranspositions.Count / 2];
+            LetterPlug firstPlug = _letterPlugsMap[first];
+            LetterPlug secondPlug = _letterPlugsMap[second];
+
+            firstPlug.Outline.enabled = true;
+            firstPlug.Outline.OutlineColor = outlineColor;
+            secondPlug.Outline.enabled = true;
+            secondPlug.Outline.OutlineColor = outlineColor;
+
+            _plugboardConnectorController.RenderNewConnection(firstPlug, secondPlug, outlineColor);
+        }
+
+        public void UnrenderTransposition(char first, char second)
+        {
+            ClearPlugOutline(first);
+            ClearPlugOutline(second);
+
+            _plugboardConnectorController.RemoveTranspositionSpline(first, second);
+        }
+
         public static bool IsTopPlug(LetterPlug plug)
         {
             return plug.tag.ToUpper()[0] >= LetterPlacement.TopRowRange.Item1 || plug.tag.ToUpper()[0] <= LetterPlacement.TopRowRange.Item2;
@@ -112,6 +154,7 @@ namespace Enigma.Plugboard
         {
             return plug.tag.ToUpper()[0] >= LetterPlacement.BotRowRange.Item1 || plug.tag.ToUpper()[0] <= LetterPlacement.BotRowRange.Item2;
         }
+
 
         private void CastRayInMouseDirection()
         {
@@ -196,8 +239,10 @@ namespace Enigma.Plugboard
             if (!_deleteMenuLetters.HasValue)
             {
                 Debug.LogWarning("Delete button in popup menu clicked with no letters assigned.");
+                return;
             }
-            RemoveTransposition(_deleteMenuLetters.Value.Item1, _deleteMenuLetters.Value.Item2);
+            UnrenderTransposition(_deleteMenuLetters.Value.Item1, _deleteMenuLetters.Value.Item2);
+            _enigmaController.RemoveTransposition(_deleteMenuLetters.Value.Item1, _deleteMenuLetters.Value.Item2);
             HideDeleteConnectionPopupMenu();
         }
 
@@ -229,14 +274,6 @@ namespace Enigma.Plugboard
             _lastLetterPlugHit = null;
         }
 
-        private void RemoveTransposition(char first, char second)
-        {
-            _enigmaController.RemoveTransposition(first, second);
-            ClearPlugOutline(first);
-            ClearPlugOutline(second);
-
-            _plugboardConnectorController.RemoveTranspositionSpline(first, second);
-        }
 
         private void ClearPlugOutline(char letter)
         {

@@ -56,5 +56,13 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "EnigmaSimulation.sln"
+    "dotnet.defaultSolution": "EnigmaSimulation.sln",
+    "cSpell.words": [
+        "Behaviour",
+        "Encryptor",
+        "Tweener",
+        "Tweening",
+        "Unrender",
+        "Yellowpaper"
+    ]
 }
