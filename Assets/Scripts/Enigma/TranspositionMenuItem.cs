@@ -66,6 +66,10 @@ public class TranspositionMenuItem : MonoBehaviour
         {
             _transpositionMenuController.RemoveTransposition(_leftTextField.text.FirstOrDefault(), _rightTextField.text.FirstOrDefault());
         }
+        else
+        {
+            _transpositionMenuController.OnDeleteEmptyMenuItem();
+        }
     }
 
     public void OnDeleteClick()

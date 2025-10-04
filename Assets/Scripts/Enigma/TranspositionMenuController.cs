@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using Enigma;
 using Enigma.Plugboard;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 
 public class TranspositionMenuController : MonoBehaviour
@@ -9,12 +11,30 @@ public class TranspositionMenuController : MonoBehaviour
     [SerializeField] private EnigmaController _enigmaController;
     [SerializeField] private TranspositionMenuItem[] _availableMenuItems;
     [SerializeField] private PlugboardController _plugboardController;
+    [SerializeField] private GameObject _plusButton;
+    [SerializeField] private RectTransform _itemsAndAddButtonLayout;
 
-    private Dictionary<(char, char), TranspositionMenuItem> _activeTranspositions = new();
+    private Dictionary<(char, char), TranspositionMenuItem> _transpositionToTranspositionMenuItem = new();
 
     private void UpdateTranspositionsItemList()
     {
         _enigmaController.GetLetterTranspositions();
+    }
+
+    public void OnAddMenuItemPressed()
+    {
+        TranspositionMenuItem availableItem = _availableMenuItems.FirstOrDefault(item => !item.gameObject.activeInHierarchy);
+        if (availableItem)
+        {
+            availableItem.gameObject.SetActive(true);
+        }
+
+        if (_availableMenuItems.All(item => item.gameObject.activeInHierarchy))
+        {
+            _plusButton.SetActive(false);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_itemsAndAddButtonLayout);
     }
 
     public bool OnMenuItemEdit(char left, char right)
@@ -42,5 +62,14 @@ public class TranspositionMenuController : MonoBehaviour
     {
         _plugboardController.UnrenderTransposition(left, right);
         _enigmaController.RemoveTransposition(left, right);
+        _transpositionToTranspositionMenuItem.Remove((left, right));
+        _plusButton.SetActive(true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_itemsAndAddButtonLayout);
+    }
+
+    public void OnDeleteEmptyMenuItem()
+    {
+        _plusButton.SetActive(true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_itemsAndAddButtonLayout);
     }
 }

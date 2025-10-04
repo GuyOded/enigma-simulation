@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AYellowpaper.SerializedCollections;
 using Consts;
 using DG.Tweening;
@@ -52,21 +53,21 @@ namespace Enigma.Plugboard
         [SerializeField] private TMP_Text _deleteConnectionPopupMenuText;
         [SerializeField] private Collider _plugCollider;
 
-        private static readonly Color[] PlugboardColors =
+        private readonly Dictionary<Color, bool> usedColorsMap = new()
         {
-            Color.HSVToRGB(0.09142857142857142f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.14285714285714285f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.21428571428571427f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.2857142857142857f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.35714285714285715f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.42857142857142855f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.5f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.5714285714285714f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.6428571428571429f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.7142857142857143f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.7857142857142858f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.8571428571428571f, 0.75f, 0.80f),
-            Color.HSVToRGB(0.97f, 0.75f, 0.80f)
+            {Color.HSVToRGB(0.09142857142857142f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.14285714285714285f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.21428571428571427f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.2857142857142857f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.35714285714285715f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.42857142857142855f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.5f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.5714285714285714f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.6428571428571429f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.7142857142857143f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.7857142857142858f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.8571428571428571f, 0.75f, 0.80f), false},
+            {Color.HSVToRGB(0.97f, 0.75f, 0.80f), false},
         };
         private const float RAYCAST_LENGTH = 100f;
 
@@ -120,7 +121,7 @@ namespace Enigma.Plugboard
                 throw new ArgumentException("Characters given are already exist in a transposition");
             }
 
-            Color outlineColor = PlugboardColors[currentTranspositions.Count / 2];
+            Color outlineColor = usedColorsMap.First(kvp => !kvp.Value).Key;
             LetterPlug firstPlug = _letterPlugsMap[first];
             LetterPlug secondPlug = _letterPlugsMap[second];
 
@@ -128,12 +129,15 @@ namespace Enigma.Plugboard
             firstPlug.Outline.OutlineColor = outlineColor;
             secondPlug.Outline.enabled = true;
             secondPlug.Outline.OutlineColor = outlineColor;
+            usedColorsMap[outlineColor] = true;
 
             _plugboardConnectorController.RenderNewConnection(firstPlug, secondPlug, outlineColor);
         }
 
         public void UnrenderTransposition(char first, char second)
         {
+            usedColorsMap[_letterPlugsMap[first].Outline.OutlineColor] = false;
+
             ClearPlugOutline(first);
             ClearPlugOutline(second);
 
@@ -258,7 +262,7 @@ namespace Enigma.Plugboard
             if (transpositionsCount >= Encryption.Consts.ALPHABET_SIZE)
                 return;
 
-            selected.Outline.OutlineColor = PlugboardColors[transpositionsCount / 2];
+            selected.Outline.OutlineColor = usedColorsMap.First(kvp => !kvp.Value).Key;
             selected.Outline.enabled = true;
             _lastLetterPlugHit = selected;
         }
@@ -270,6 +274,7 @@ namespace Enigma.Plugboard
             secondPlug.Outline.enabled = true;
             _plugboardConnectorController.RenderNewConnection(_lastLetterPlugHit, secondPlug,
                 _lastLetterPlugHit.Outline.OutlineColor);
+            usedColorsMap[secondPlug.Outline.OutlineColor] = true;
 
             _lastLetterPlugHit = null;
         }
