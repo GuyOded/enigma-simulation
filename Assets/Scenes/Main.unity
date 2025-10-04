@@ -6737,6 +6737,7 @@ MonoBehaviour:
   _typeModeAlignment: {fileID: 1284383019}
   _letterTranspositionModeAlignment: {fileID: 419151045}
   _plugboardController: {fileID: 952891114}
+  _transpositionMenu: {fileID: 1188225655}
 --- !u!114 &951961470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9771,7 +9772,7 @@ MonoBehaviour:
   - {fileID: 938889525}
   _plugboardController: {fileID: 952891114}
   _plusButton: {fileID: 5414226150646193096}
-  _menuRoot: {fileID: 1188225644}
+  _itemsAndAddButtonLayout: {fileID: 647508789}
 --- !u!1 &1190285649
 GameObject:
   m_ObjectHideFlags: 0

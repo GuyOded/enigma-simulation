@@ -59,6 +59,17 @@ public class TranspositionMenuItem : MonoBehaviour
         _currentRight = newRight;
     }
 
+    public void SetTransposition(char left, char right)
+    {
+        _currentLeft = left;
+        _currentRight = right;
+        _outlineComponent.enabled = false;
+        _isFirstTimeEdit = false;
+        _leftTextField.text = left.ToString();
+        _rightTextField.text = right.ToString();
+        _isCurrentlyRepresentingValidTransposition = true;
+    }
+
     public void DisableMenuItem()
     {
         gameObject.SetActive(false);

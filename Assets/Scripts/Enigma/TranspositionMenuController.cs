@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Enigma;
 using Enigma.Plugboard;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -16,9 +18,23 @@ public class TranspositionMenuController : MonoBehaviour
 
     private Dictionary<(char, char), TranspositionMenuItem> _transpositionToTranspositionMenuItem = new();
 
-    private void UpdateTranspositionsItemList()
+    public void UpdateTranspositionsItemList()
     {
-        _enigmaController.GetLetterTranspositions();
+        IDictionary<char, char> transpositions = _enigmaController.GetLetterTranspositions();
+        foreach (TranspositionMenuItem item in _availableMenuItems)
+        {
+            item.gameObject.SetActive(false);
+        }
+
+        Dictionary<char, char> transpositionsWithoutDuplicates = transpositions.GroupBy(kvp => kvp.Key < kvp.Value ? (kvp.Key, kvp.Value) : (kvp.Value, kvp.Key))
+        .Select(grouping => grouping.First())
+        .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+        foreach ((KeyValuePair<char, char> transposition, TranspositionMenuItem menuItem) transpositionToItem in transpositionsWithoutDuplicates.Zip(_availableMenuItems, (kvp, menuItem) => (kvp, menuItem)))
+        {
+            transpositionToItem.menuItem.gameObject.SetActive(true);
+            transpositionToItem.menuItem.SetTransposition(transpositionToItem.transposition.Key, transpositionToItem.transposition.Value);
+        }
     }
 
     public void OnAddMenuItemPressed()
@@ -54,14 +70,14 @@ public class TranspositionMenuController : MonoBehaviour
         }
 
         _plugboardController.RenderConnection(left, right);
-        _enigmaController.AddNewTransposition(left, right);
+        _enigmaController.AddNewTransposition(left, right, MutationSource.TranspositionMenu);
         return true;
     }
 
     public void RemoveTransposition(char left, char right)
     {
         _plugboardController.UnrenderTransposition(left, right);
-        _enigmaController.RemoveTransposition(left, right);
+        _enigmaController.RemoveTransposition(left, right, MutationSource.TranspositionMenu);
         _transpositionToTranspositionMenuItem.Remove((left, right));
         _plusButton.SetActive(true);
         LayoutRebuilder.ForceRebuildLayoutImmediate(_itemsAndAddButtonLayout);

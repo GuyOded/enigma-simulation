@@ -24,6 +24,7 @@ namespace Enigma
         [SerializeField] private Transform _letterTranspositionModeAlignment;
 
         [SerializeField] private PlugboardController _plugboardController;
+        [SerializeField] private TranspositionMenuController _transpositionMenu;
 
         private EnigmaEncryptor _enigmaEncryptor;
         private EnigmaOperationMode _currentMode;
@@ -95,7 +96,7 @@ namespace Enigma
             return null;
         }
 
-        public void AddNewTransposition(char first, char second)
+        public void AddNewTransposition(char first, char second, MutationSource source = MutationSource.NotSet)
         {
             IDictionary<char, char> currentTranspositions = _enigmaEncryptor.GetLetterTranspositions();
             if (currentTranspositions.ContainsKey(first) || currentTranspositions.ContainsKey(second) ||
@@ -108,9 +109,14 @@ namespace Enigma
 
             _enigmaEncryptor = new EnigmaEncryptor(newTranspositions, CreateCurrentRotorConfig(),
                 _enigmaEncryptor.GetReflector());
+
+            if (source != MutationSource.TranspositionMenu)
+            {
+                _transpositionMenu.UpdateTranspositionsItemList();
+            }
         }
 
-        public void RemoveTransposition(char first, char second)
+        public void RemoveTransposition(char first, char second, MutationSource source = MutationSource.NotSet)
         {
             IDictionary<char, char> currentTranspositions = _enigmaEncryptor.GetLetterTranspositions();
             if (!currentTranspositions.ContainsKey(first) || !currentTranspositions.ContainsKey(second))
@@ -121,6 +127,10 @@ namespace Enigma
             Dictionary<char, char> newTranspositions = currentTranspositions.Where(kvp => first != kvp.Key && second != kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             _enigmaEncryptor = new EnigmaEncryptor(newTranspositions, CreateCurrentRotorConfig(), _enigmaEncryptor.GetReflector());
+            if (source != MutationSource.TranspositionMenu)
+            {
+                _transpositionMenu.UpdateTranspositionsItemList();
+            }
         }
 
         public int GetRotorPosition(RotorsPlacement placement)
@@ -272,5 +282,12 @@ namespace Enigma
                 _typeModeController.OnKeyUp(key);
             }
         }
+    }
+
+    public enum MutationSource
+    {
+        PlugboardController,
+        TranspositionMenu,
+        NotSet,
     }
 }
