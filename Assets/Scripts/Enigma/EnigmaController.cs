@@ -107,7 +107,7 @@ namespace Enigma
 
             Dictionary<char, char> newTranspositions = new(currentTranspositions) { { first, second } };
 
-            _enigmaEncryptor = new EnigmaEncryptor(newTranspositions, CreateCurrentRotorConfig(),
+            _enigmaEncryptor = new EnigmaEncryptor(newTranspositions, BuildCurrentEncryptorConfig(),
                 _enigmaEncryptor.GetReflector());
 
             if (source != MutationSource.TranspositionMenu)
@@ -126,7 +126,7 @@ namespace Enigma
 
             Dictionary<char, char> newTranspositions = currentTranspositions.Where(kvp => first != kvp.Key && second != kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-            _enigmaEncryptor = new EnigmaEncryptor(newTranspositions, CreateCurrentRotorConfig(), _enigmaEncryptor.GetReflector());
+            _enigmaEncryptor = new EnigmaEncryptor(newTranspositions, BuildCurrentEncryptorConfig(), _enigmaEncryptor.GetReflector());
             if (source != MutationSource.TranspositionMenu)
             {
                 _transpositionMenu.UpdateTranspositionsItemList();
@@ -146,12 +146,25 @@ namespace Enigma
             return _enigmaEncryptor.GetCurrentRotorPositions()[rotorIndex];
         }
 
-        private ICollection<RotorConfiguration> CreateCurrentRotorConfig()
+        public void SetEnigmaRotorType(RotorsPlacement rotor, RotorProps rotorProps)
         {
-            return _enigmaEncryptor.GetInitialConfiguration().Zip(_enigmaEncryptor.GetCurrentRotorPositions(), (rc, position) =>
-            {
-                return new RotorConfiguration(rc.RotorProps, (char)('A' + position), rc.StepCallback, rc.RingSetting);
-            }).ToList();
+            int rotorIndex = GetRotorIndexByPlacement(rotor);
+
+            List<RotorConfiguration> currentEncryptorConfig = BuildCurrentEncryptorConfig();
+            RotorConfiguration previousRotorConfig = currentEncryptorConfig[rotorIndex];
+            currentEncryptorConfig[rotorIndex] = new RotorConfiguration(rotorProps,
+                previousRotorConfig.InitialPosition,
+                previousRotorConfig.StepCallback,
+                previousRotorConfig.RingSetting);
+
+            _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), currentEncryptorConfig,
+                _enigmaEncryptor.GetReflector());
+        }
+
+        public void SetEnigmaReflectorType(IDictionary<char, char> reflectorMap)
+        {
+            List<RotorConfiguration> currentEncryptorConfig = BuildCurrentEncryptorConfig();
+            _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), currentEncryptorConfig, reflectorMap);
         }
 
         private void SetEnigmaRotorPositions(RotorsPlacement rotor, int stepsToRotate)
@@ -176,21 +189,6 @@ namespace Enigma
                 }).ToArray();
 
             _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), newConfig,
-                _enigmaEncryptor.GetReflector());
-        }
-
-        public void SetEnigmaRotorType(RotorsPlacement rotor, RotorProps rotorProps)
-        {
-            int rotorIndex = GetRotorIndexByPlacement(rotor);
-
-            List<RotorConfiguration> currentEncryptorConfig = BuildCurrentEncryptorConfig();
-            RotorConfiguration previousRotorConfig = currentEncryptorConfig[rotorIndex];
-            currentEncryptorConfig[rotorIndex] = new RotorConfiguration(rotorProps,
-                previousRotorConfig.InitialPosition,
-                previousRotorConfig.StepCallback,
-                previousRotorConfig.RingSetting);
-
-            _enigmaEncryptor = new EnigmaEncryptor(_enigmaEncryptor.GetLetterTranspositions(), currentEncryptorConfig,
                 _enigmaEncryptor.GetReflector());
         }
 

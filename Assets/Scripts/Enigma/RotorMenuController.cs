@@ -55,6 +55,11 @@ namespace Enigma
             _enigmaController.SetEnigmaRotorType(RotorsPlacement.Right, GetRotorPropsByIndex(index));
         }
 
+        public void OnReflectorTypeChange(int index)
+        {
+            _enigmaController.SetEnigmaReflectorType(GetReflectorByIndex(index));
+        }
+
         private RotorProps GetRotorPropsByIndex(int index)
         {
             return index switch
@@ -65,6 +70,19 @@ namespace Enigma
                 3 => Rotors.ROTOR_PROPS_4,
                 4 => Rotors.ROTOR_PROPS_5,
                 _ => throw new ArgumentOutOfRangeException(nameof(index), "No rotor types available for this index")
+            };
+        }
+
+        private IDictionary<char, char> GetReflectorByIndex(int index)
+        {
+            return index switch
+            {
+                0 => Reflectors.REFLECTOR_A,
+                1 => Reflectors.REFLECTOR_B,
+                2 => Reflectors.REFLECTOR_C,
+                3 => Reflectors.REFLECTOR_BETA,
+                4 => Reflectors.REFLECTOR_GAMMA,
+                _ => throw new ArgumentOutOfRangeException(nameof(index), "No reflector types available for this index")
             };
         }
 

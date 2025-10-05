@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Enigma;
 using Enigma.Plugboard;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +16,11 @@ public class TranspositionMenuController : MonoBehaviour
     [SerializeField] private RectTransform _itemsAndAddButtonLayout;
 
     private Dictionary<(char, char), TranspositionMenuItem> _transpositionToTranspositionMenuItem = new();
+
+    void OnEnable()
+    {
+        UpdateTranspositionsItemList();
+    }
 
     public void UpdateTranspositionsItemList()
     {
