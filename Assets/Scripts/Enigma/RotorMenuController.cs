@@ -80,8 +80,6 @@ namespace Enigma
                 0 => Reflectors.REFLECTOR_A,
                 1 => Reflectors.REFLECTOR_B,
                 2 => Reflectors.REFLECTOR_C,
-                3 => Reflectors.REFLECTOR_BETA,
-                4 => Reflectors.REFLECTOR_GAMMA,
                 _ => throw new ArgumentOutOfRangeException(nameof(index), "No reflector types available for this index")
             };
         }
