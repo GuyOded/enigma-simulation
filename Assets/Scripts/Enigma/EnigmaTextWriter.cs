@@ -10,6 +10,7 @@ namespace Enigma
         [SerializeField] private TMP_Text _plainText;
         [SerializeField] private TMP_Text _cipherText;
         [SerializeField] private InputController _inputController;
+        [SerializeField] private ClipboardController _clipboardController;
 
         private void Start()
         {
@@ -30,6 +31,18 @@ namespace Enigma
         public void WriteCipherText(char c)
         {
             _cipherText.text += char.ToUpper(c);
+        }
+
+        public void ClearTextBoxes()
+        {
+            _plainText.text = "";
+            _cipherText.text = "";
+        }
+
+        public void CopyTextsToClipboard()
+        {
+            string textToCopy = $"Plain: {_plainText.text}\nCipher: {_cipherText.text}\n";
+            _clipboardController.CopyText(textToCopy);
         }
 
         private void WritePlainText(string text)
